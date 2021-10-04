@@ -1,0 +1,160 @@
+:root {
+    --blanco: #ffffff;
+    --oscuro: #212121;
+    --primario: #FFC107;
+    --secundario: #0097A7;
+    --gris: #757575;
+}
+html{
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body{
+    font-size: 16px;
+    font-family: 'Cuprum', sans-serif;
+    background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+    min-height: 100%;    
+}
+
+h1 {
+    font-size: 1.4rem;    
+}
+
+h1 span {
+    font-size: 1.4rem;
+}
+
+h1, h2, h3 {
+    text-align: center;
+}
+
+h2 {
+    font-size: 2.4rem;
+}
+
+h3 {
+    color: var(--secundario);
+    font-weight: 400;
+    font-size: 1.6rem;
+}
+
+.titulo {
+    text-align: center;
+    font-size: 3.8rem;
+    font-family: 'Acme', sans-serif;
+    color: rgb(5, 5, 66);
+}
+
+.titulo span{
+    font: size 2rem;
+}
+
+.servicios {
+    text-align:center;
+    align-items: center;    
+}
+
+.servicio {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+
+}
+
+.servicio h2 {
+    color: var(--secundario);
+    font-weight: normal;
+}
+
+.servicio .formulario{
+    align-items: center;    
+}
+
+.contenedor {
+    max-width:120rem;
+    margin: 0 auto; /* Repite los valores para los dos faltantes */
+}
+
+.sombra {
+    padding: 2rem;
+    margin-bottom: 3rem;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 11px 15px -9px rgba(0,0,0,0.63);
+    -moz-box-shadow: 0px 11px 15px -9px rgba(0,0,0,0.63);
+    box-shadow: 0px 11px 15px -9px rgba(0,0,0,0.63);  
+}
+
+.nav-ppal {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@media (min-width:768px){
+    .nav-ppal {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .servicios {
+        display:grid;
+        grid-template-columns: 70% 30%;
+    }
+
+}
+
+@media (min-width:480px) {
+}
+
+.nav-ppal a {
+    padding: 1rem;    
+    color: var(--blanco);
+    text-decoration: none;
+    font: size 2rem;
+    font-weight: bold;
+}
+
+.nav-ppal a:hover {
+    background-color: var(--primario);    
+    color: var(--oscuro);
+}
+
+.nav-bg {
+    background-color: var(--secundario);
+}
+
+.daimler {
+    background-image: url(../img/hero.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 450px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+}
+
+.content-daimler{
+    position: absolute;
+    background-color: red;
+    background-color: rgba(0, 0, 0, .7);
+    background-color: rgb(0 0 0 / 30%);
+    width: 100%; /*2rem;*/
+    height: 100%; /*2rem;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;       
+}
+
+span{
+    font: size 2rem;
+}
