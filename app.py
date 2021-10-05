@@ -3,6 +3,9 @@ app=Flask(__name__)
 
 @app.route('/')
 def inicio():
+    # si ya inicio sesion 
+    # chequear el perfil
+    #
     return render_template('index.html')
 
 if __name__ == '__main__':  #Cuando este corriendo de modo principal debe subir el servidor
