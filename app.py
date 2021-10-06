@@ -1,8 +1,21 @@
 from flask import Flask, render_template
 app=Flask(__name__)
 
-opciones=[1,2,3]
+opciones={
+    1: "Editar/Crear proveedores",
+    2: "Consultar Proveedores",
+    3: "Eliminar Proveedores"}
+
 usuarios=["SuperAdmin", "Admin", "Usuario"]
+
+Lista_productos={
+    1001: "BMWi3",
+    2001: "KIA NEW SPORTAGE 2.0",
+    3001: "FORD EXPLORER LIMITED 3.5",
+    4001: "Audi A5 Sportbag",
+    5001: "Mercedes Benz E200"}
+
+Lista_proveedor=["BMW", "Audi", "Subaru", "Kia", "FORD", "Mercedes Benz"] 
 
 @app.route("/", methods=["GET", "POST"])
 def inicio():
@@ -36,8 +49,30 @@ def registro():
     return render_template('admin.html') 
     # "Administracion de Usuarios"
 
-@app.route("/productos", methods=["GET", "POST"])
-def productos():
+@app.route("/productos/<id_productos>", methods=["GET", "POST"])
+def productos(id_productos):
+    #LogicaAlgoritm Sprint 3
+    
+    try:
+        id_productos= int(id_productos)
+    except Exception as e:
+        opcion = 0
+
+    if id_productos in Lista_productos:
+        return  Lista_productos[id_productos]
+    else:
+        return  f"Error producto :{id_productos} no existe"
+
+
+
+
+
+    if id_productos in Lista_productos: 
+    # si ya inicio sesion 
+    # chequear el perfil
+        return  f"Pagina de Gestion de Productos : {id_productos}"
+    else:
+        return f"Error producto :{id_productos} no existe"
     # si ya inicio sesion 
     # chequear el perfil
     return  "Pagina de Gestion de Productos"
@@ -59,27 +94,37 @@ def gestion_productos(opcion):
     # render_template('gproductos.html')
 
 
-@app.route("/proveedores", methods=["GET", "POST"])
-def proveedores():
+@app.route("/proveedores/<id_proveedor>", methods=["GET", "POST"]) 
+def proveedores(id_proveedor):
+    #LogicaAlgoritm Sprint 3
+    if id_proveedor in Lista_proveedor: 
     # si ya inicio sesion 
     # chequear el perfil
-    return  "Pagina de Gestion de Proveedores"
+        return  f"Pagina de Gestion de Proveedores : {id_proveedor}"
+    else:
+        return f"Error proveedor :{id_proveedor} no existe"
     # Editar / Crear Proveedores
     # render_template('proveedor.html')
 
 
-@app.route("/proveedores/<opcion>", methods=["GET", "POST"])
+@app.route("/proveedor/<opcion>", methods=["GET", "POST"])
 def gestion_proveedores(opcion):
+    #return  "Opcion 1 Editar/Crear Proveedor"
     # si ya inicio sesion 
     # chequear el perfil
-    opcion = int(opcion)
-    if opcion == 1:
-        return  "Opcion 1 Editar/Crear Proveedor"
-    else:
-        return  "Opcion 2 Consultar Proveedores"
-    # Editar / Crear Proveedores
-    # render_template('gproveedor.html')
 
+    #LogicaAlgoritm Sprint3
+    try:
+        opcion= int(opcion)
+    except Exception as e:
+        opcion = 0
+
+    if opcion in opciones:
+        return  opciones[opcion]
+    else:
+        return  "Opcion Invalida"
+    # Editar / Crear Proveedores
+    # render_template('gproveedor.html')"""
 
 @app.route("/ayuda", methods=["GET"])
 def ayuda():
