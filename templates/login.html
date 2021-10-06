@@ -13,20 +13,14 @@
 </head>
 <body>
     <header>
-        <h1 class="titulo">AUTOS DAIMLER<span> Bienvenidos</span></h1>
+        <h1 class="titulo">DAIMLER <span>Inventario</span></h1>
     </header>
 
     <main class="contenedor sombra">
         <div class="servicios">
             <section class="daimler">
                 <div class="content-daimler">
-                    
-                    {% if sesion_iniciada %}
-                        <h2 class="titulo">BIENVENIDO AL SISTEMA DE INVENTARIO</h2>            
-                    {%else%}
-                        <h2 class="titulo">PAGINA INICIAL</h2>
-                    {%endif%}
-
+                    <h2 class="titulo">Entrada al Sistema</h2>            
                     <p>Barranquilla, Atlántico</p>
                     <a href="#">Contactar</a>
                 </div>
@@ -35,20 +29,27 @@
             <section class="servicio">
                 <h2>Contacto</h2>
                 <div class="formulario">
-                    {% if sesion_iniciada %}
-                        
-                        <p> Bienvenido </p>
-                        
-                        <form action="/salir" method="POST">
-                            {{csrf_token}}
+                    <form action="/login" method="POST">
+                        {{csrf_token}}
+
+                        <fieldset>
+                            <legend> [ L O G I N ] </legend>
                             
-                            <input type="submit" value="SALIR">
-
-                        </form>
-
-                    {% else %}    
-                        <h2> Ingresar al <a href="\login">SISTEMA</a> </h2>
-                    {% endif %}
+                            <div>
+                                <label>Usuario: </label>
+                                <input type="text" placeholder="Nombre de Usuario">
+                            </div>
+            
+                            <div>
+                                <label>Contraseña: </label>
+                                <input type="password" placeholder="Contraseña">
+                            </div>
+            
+                            <input type="submit" value="Aceptar">
+                            <input type="submit" value="Cancelar">
+            
+                        </fieldset>
+                    </form>
                 </div>
             </section>
         </div>

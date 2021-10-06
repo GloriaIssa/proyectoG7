@@ -1,4 +1,6 @@
 from flask import Flask, render_template
+from flask import redirect, request
+
 app=Flask(__name__)
 
 opciones={
@@ -6,7 +8,7 @@ opciones={
     2: "Consultar Proveedores",
     3: "Eliminar Proveedores"}
 
-usuarios=["SuperAdmin", "Admin", "Usuario"]
+usuarios=["SUPERAD", "ADMIN", "USER"]
 
 Lista_productos={
     1001: "BMWi3",
@@ -17,13 +19,32 @@ Lista_productos={
 
 Lista_proveedor=["BMW", "Audi", "Subaru", "Kia", "FORD", "Mercedes Benz"] 
 
-@app.route("/", methods=["GET", "POST"])
+sesion_iniciada=False
+
+@app.route("/", methods=["GET"])
 def inicio():
     # si ya inicio sesion 
     # chequear el perfil
-    #
-    return render_template('index.html')
+    # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
 
+    return render_template('index.html', sesion_iniciada=sesion_iniciada)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    global sesion_iniciada
+    if request.method=="GET":
+        return render_template("login.html")
+    else:
+        sesion_iniciada=True
+        return redirect('/')
+
+
+@app.route("/salir", methods=["POST"])
+def salir():
+    global sesion_iniciada
+    sesion_iniciada=False
+    return redirect('/')
 
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():
@@ -62,9 +83,6 @@ def productos(id_productos):
         return  Lista_productos[id_productos]
     else:
         return  f"Error producto :{id_productos} no existe"
-
-
-
 
 
     if id_productos in Lista_productos: 
