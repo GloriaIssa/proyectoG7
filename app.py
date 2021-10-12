@@ -1,6 +1,8 @@
 from flask import Flask, render_template
 from flask import redirect, request
 
+import forms
+
 app=Flask(__name__)
 
 opciones={
@@ -8,7 +10,7 @@ opciones={
     2: "Consultar Proveedores",
     3: "Eliminar Proveedores"}
 
-usuarios=["SUPERAD", "ADMIN", "USER"]
+usuarios=("SUPERADMIN", "ADMIN", "USER")
 
 Lista_productos={
     1001: "BMWi3",
@@ -20,24 +22,38 @@ Lista_productos={
 Lista_proveedor=["BMW", "Audi", "Subaru", "Kia", "FORD", "Mercedes Benz"] 
 
 sesion_iniciada=False
+usuario=None
 
 @app.route("/", methods=["GET"])
+@app.route("/inicio", methods=["GET"])
 def inicio():
     # si ya inicio sesion 
     # chequear el perfil
     # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
-
-    return render_template('index.html', sesion_iniciada=sesion_iniciada)
+    return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=usuario)
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    global sesion_iniciada
-    if request.method=="GET":
-        return render_template("login.html")
-    else:
+    global sesion_iniciada, usuario
+    login_form = forms.LoginForm(request.form)
+
+    if request.method=="POST":
         sesion_iniciada=True
-        return redirect('/')
+        usuario = login_form.usuario.data
+        password = login_form.password.data
+        if usuario in usuarios:
+            if usuario == "SUPERADMIN":
+                return "Pagina de Super Administrador"
+            elif usuario == "ADMIN":
+                return render_template("home.html")
+            elif usuario == "USER":
+                return "Pagina de Usuario Final"
+        else:
+            sesion_iniciada=False
+            return redirect('/')
+
+    return render_template("login.html", form = login_form)
 
 
 @app.route("/salir", methods=["POST"])
@@ -45,6 +61,13 @@ def salir():
     global sesion_iniciada
     sesion_iniciada=False
     return redirect('/')
+
+@app.route("/cancelar", methods=["POST"])
+def cancelar():
+    global sesion_iniciada
+    sesion_iniciada=False
+    return redirect('/')
+
 
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():
@@ -69,6 +92,7 @@ def registro():
     # chequear el perfil
     return render_template('admin.html') 
     # "Administracion de Usuarios"
+
 
 @app.route("/productos/<id_productos>", methods=["GET", "POST"])
 def productos(id_productos):
@@ -151,6 +175,7 @@ def ayuda():
     return  "Manual de Gestión de DAIMLER"
     # Ayuda en General con aceso a Videos.
     # render_template('ayuda.html')
+
 
 @app.errorhandler(404)
 def page_not_found(error):

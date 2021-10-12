@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario DAIMLER</title>
-    <link rel="preload" href="{{ url_for('static', filename= 'css/normalize.css') }}" as="style" >
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/normalize.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Acme&family=Cuprum&display=swap" rel="stylesheet">
-    <link rel="preload" href="{{ url_for('static', filename= 'css/styles.css') }}" as="style" >
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/styles.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block contenido %}
     <div class="v50_198 servicios">
         <div class="v52_355">
             <div class="content-daimler">
@@ -41,20 +30,4 @@
         <!--<div class="v53_366"></div>
         <div class="v53_386"></div>-->
     </div>
-        <!-- <input class="v53_373" type="text" name="Usuario" placeholder="Usuario">
-            <input class="v53_387" type="password"name="Contraseña" placeholder="Contraseña">
-            <span class="v53_395">¿Olvidó su contraseña?</span>
-            <div class="v53_389"> 
-                <img src="images/Vector.svg" alt="icono ver"></div>
-            <div class="v53_390">
-                <button type="button" class="v53_391"></button>
-                <span class="v53_392">Ingresar</span>
-            </div> -->
-    <br>
-    <footer class="contenedor sombra">
-        <p> </p>
-        <p>Todos los derechos Reservados - GRUPO 7-1177</p>
-        <p> </p>
-    </footer>
-</body>
-</html>
+{% endblock %}

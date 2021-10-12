@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inventario DAIMLER</title>
+        <link rel="preload" href="{{ url_for('static', filename= 'css/normalize.css') }}" as="style" >
+        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/normalize.css') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Acme&family=Cuprum&display=swap" rel="stylesheet">
+        <link rel="preload" href="{{ url_for('static', filename= 'css/styles.css') }}" as="style" >
+        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/styles.css') }}">
+    </head>
+    <body>
+        {% block contenido %}
+        {% endblock %}
+
+        <br>
+        <footer class="contenedor sombra">
+            <p></p>
+            <p>Todos los derechos Reservados - GRUPO 7-1177</p>
+            <p></p>
+        </footer>
+    </body>
+</html>
