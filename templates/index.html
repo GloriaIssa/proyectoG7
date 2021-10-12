@@ -12,49 +12,45 @@
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/styles.css') }}">
 </head>
 <body>
-    <header>
-        <h1 class="titulo">AUTOS DAIMLER<span> Bienvenidos</span></h1>
-    </header>
-
-    <main class="contenedor sombra">
-        <div class="servicios">
-            <section class="daimler">
-                <div class="content-daimler">
-                    
-                    {% if sesion_iniciada %}
-                        <h2 class="titulo">BIENVENIDO AL SISTEMA DE INVENTARIO</h2>            
-                    {%else%}
-                        <h2 class="titulo">PAGINA INICIAL</h2>
-                    {%endif%}
-
-                    <p>Barranquilla, Atlántico</p>
-                    <a href="#">Contactar</a>
-                </div>
-            </section>
-        
-            <section class="servicio">
-                <h2>Contacto</h2>
-                <div class="formulario">
-                    {% if sesion_iniciada %}
-                        
-                        <p> Bienvenido </p>
-                        
-                        <form action="/salir" method="POST">
-                            {{csrf_token}}
-                            
-                            <input type="submit" value="SALIR">
-
-                        </form>
-
-                    {% else %}    
-                        <h2> Ingresar al <a href="\login">SISTEMA</a> </h2>
-                    {% endif %}
-                </div>
-            </section>
+    <div class="v50_198 servicios">
+        <div class="v52_355">
+            <div class="content-daimler">
+                {% if sesion_iniciada %}
+                    <h2 class="titulo">BIENVENIDO AL SISTEMA DE INVENTARIO</h2>            
+                {%else%}
+                    <h2 class="titulo">PAGINA INICIAL</h2>
+                {%endif%}
+                <p>Barranquilla, Atlántico</p>
+                <a href="#">Contactar</a>        
+            </div>
         </div>
-    </main>
-    
-    
+        <div class="v52_358"></div>
+        <div class="formulario">
+            <span>Inicio de sesión</span>
+            {% if sesion_iniciada %}
+                <p> Bienvenido </p>
+                <form action="/salir" method="POST">
+                    {{csrf_token}}
+                    <input type="submit" value="SALIR">
+                </form>
+            {% else %}    
+                <h2> Ingresar al <a href="\login">SISTEMA</a> </h2>
+            {% endif %}
+        </div>
+        
+        <!--<div class="v53_366"></div>
+        <div class="v53_386"></div>-->
+    </div>
+        <!-- <input class="v53_373" type="text" name="Usuario" placeholder="Usuario">
+            <input class="v53_387" type="password"name="Contraseña" placeholder="Contraseña">
+            <span class="v53_395">¿Olvidó su contraseña?</span>
+            <div class="v53_389"> 
+                <img src="images/Vector.svg" alt="icono ver"></div>
+            <div class="v53_390">
+                <button type="button" class="v53_391"></button>
+                <span class="v53_392">Ingresar</span>
+            </div> -->
+     
     <footer>
         <p>Todos los derechos Reservados - GRUPO 7-1177</p>
     </footer>

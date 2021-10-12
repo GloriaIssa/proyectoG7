@@ -152,5 +152,9 @@ def ayuda():
     # Ayuda en General con aceso a Videos.
     # render_template('ayuda.html')
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return "Pagina No Encontrada ... ", 404
+
 if __name__ == '__main__':  #Cuando este corriendo de modo principal debe subir el servidor
     app.run(debug=True)     #Para que cuando haga un cambio y guarde el servidor se actualiza enseguida
