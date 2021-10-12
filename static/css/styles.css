@@ -54,7 +54,7 @@ h3 {
     text-align: center;
     font-size: 3.8rem;
     font-family: 'Acme', sans-serif;
-    color: rgb(5, 5, 66);
+    color: rgb(159, 159, 224);
 }
 
 .titulo span{
@@ -302,15 +302,12 @@ span{
     left: 914px;
     overflow: hidden;
   }
-  .v53_391 {
-    width: 330px;
-    height: 50px;
-    background: rgba(85,85,85,1);
+  .boton {
+    width: 100px;
+    height: 30px;
+    background: rgba(152, 172, 177);
     opacity: 1;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    border: 1px solid rgba(85,85,85,1);
+    border: 1px solid rgb(152, 172, 177);
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     border-bottom-left-radius: 6px;

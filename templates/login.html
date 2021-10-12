@@ -12,22 +12,22 @@
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/styles.css') }}">
 </head>
 <body>
-    <header>
-        <h1 class="titulo">DAIMLER <span>Inventario</span></h1>
-    </header>
-
-    <main class="contenedor sombra">
-        <div class="servicios">
-            <section class="daimler">
-                <div class="content-daimler">
-                    <h2 class="titulo">Entrada al Sistema</h2>            
-                    <p>Barranquilla, Atlántico</p>
-                    <a href="#">Contactar</a>
-                </div>
-            </section>
-        
+    <div class="v50_198 servicios">
+        <div class="v52_355">
+            <div class="content-daimler">
+                {% if sesion_iniciada %}
+                    <h2 class="titulo">SISTEMA DE INVENTARIO</h2>            
+                {%else%}
+                    <h2 class="titulo">ENTRADA AL SISTEMA</h2>
+                {%endif%}
+                <p>Barranquilla, Atlántico</p>
+                <a href="#">Contactar</a>        
+            </div>
+        </div>
+        <div class="v52_358"></div>
+        <div class="formulario">
             <section class="servicio">
-                <h2>Contacto</h2>
+                <h2>INGRESAR</h2>
                 <div class="formulario">
                     <form action="/login" method="POST">
                         {{csrf_token}}
@@ -45,19 +45,21 @@
                                 <input type="password" placeholder="Contraseña">
                             </div>
             
-                            <input type="submit" value="Aceptar">
-                            <input type="submit" value="Cancelar">
+                            <input type="submit" value="Aceptar" class="boton">
+                            <input type="submit" value="Cancelar" class="boton">
             
                         </fieldset>
                     </form>
                 </div>
             </section>
+
         </div>
-    </main>
-    
-    
-    <footer>
+    </div>
+    <br>
+    <footer class="contenedor sombra">
+        <p></p>
         <p>Todos los derechos Reservados - GRUPO 7-1177</p>
+        <p></p>
     </footer>
 </body>
 </html>
