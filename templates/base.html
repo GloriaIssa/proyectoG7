@@ -10,6 +10,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Acme&family=Cuprum&display=swap" rel="stylesheet">
         <link rel="preload" href="{{ url_for('static', filename= 'css/styles.css') }}" as="style" >
         <link rel="stylesheet" href="{{ url_for('static', filename= 'css/styles.css') }}">
+        <link rel="preload" href="{{ url_for('static', filename= 'css/preload.css') }}" as="style" >
+        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/preload.css') }}">
     </head>
     <body>
         {% block contenido %}
