@@ -17,7 +17,7 @@ CREATE TABLE usuarios (
   cargo varchar(15) DEFAULT NULL,
   foto varchar(100) DEFAULT NULL,
   codigo_rol varchar(15) NOT NULL,
-  password varchar(50) NOT NULL,
+  password varchar(102) NOT NULL,
   codigo_pais varchar(15) DEFAULT NULL,
   direccion varchar(255) DEFAULT NULL,
   telefono varchar(50) NOT NULL,
@@ -246,9 +246,9 @@ try:
     INSERT INTO usuarios (codigo_usuario, nombre_usuario, email_usuario, cargo, foto, codigo_rol,
                 password, codigo_pais, direccion, telefono, celular, ciudad, fecha_ult_con, intentos, bloqueo,
                 fecha_usuario, fecha_password, estado ) 
-    VALUES ('Administrador', 'ADMIN', 'admin@daimler.com.co', 'Administrador', '', 'ADMIN', '1357924680', 'CO', 'CALLE con CRA', '3012011234', '3012011234', 'BAQ', datetime('now'),1,0,datetime('now'), datetime('now'), '1' ),
-           ('SuperAdministrador', 'SUPERADMIN', 'superadmin@daimler.com.co', 'Super Administrador', '', 'SADMIN', '1357924680', 'CO', 'CALLE con CRA', '3012011234', '3012011234', 'BAQ', datetime('now'),1,0,datetime('now'), datetime('now'), '1' ),
-           ('Usuario', 'USUARIO', 'user@daimler.com.co', 'Usuario Final', '', 'USER', '1357924680', 'CO', 'CALLE con CRA', '3012011234', '3012011234', 'BAQ', datetime('now'),1,0,datetime('now'), datetime('now'), '1' )
+    VALUES ('Administrador', 'ADMIN', 'admin@daimler.com.co', 'Administrador', '', 'ADMIN', 'pbkdf2:sha256:260000$JDJagGGCvlRU6aUM$0a2ef98b09f2a496ed4a20a4c73c8718e8fe77e1f7362d403f4715746f10ae6c', 'CO', 'CALLE con CRA', '3012011234', '3012011234', 'BAQ', datetime('now'),1,0,datetime('now'), datetime('now'), '1' ),
+           ('SuperAdministrador', 'SUPERADMIN', 'superadmin@daimler.com.co', 'Super Administrador', '', 'SADMIN', 'pbkdf2:sha256:260000$JDJagGGCvlRU6aUM$0a2ef98b09f2a496ed4a20a4c73c8718e8fe77e1f7362d403f4715746f10ae6c', 'CO', 'CALLE con CRA', '3012011234', '3012011234', 'BAQ', datetime('now'),1,0,datetime('now'), datetime('now'), '1' ),
+           ('Usuario', 'USUARIO', 'user@daimler.com.co', 'Usuario Final', '', 'USER', 'pbkdf2:sha256:260000$JDJagGGCvlRU6aUM$0a2ef98b09f2a496ed4a20a4c73c8718e8fe77e1f7362d403f4715746f10ae6c', 'CO', 'CALLE con CRA', '3012011234', '3012011234', 'BAQ', datetime('now'),1,0,datetime('now'), datetime('now'), '1' )
     """)
 except Exception as e:
     print(e)

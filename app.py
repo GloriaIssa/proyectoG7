@@ -42,8 +42,8 @@ def inicio():
     if g.user: # si ya inicio sesion 
        # chequear el perfil
        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
-       return redirect( url_for('inicio' ) ) 
-        
+       return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
+
     return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=usuario)
     
 
@@ -60,6 +60,8 @@ def login():
             error = None
             username = request.form['usuario']
             password = request.form['password']
+            passHasheado = generate_password_hash(password)
+            print(passHasheado)
             if not username:
                 error = 'Debes ingresar el usuario'
                 flash( error )
@@ -89,6 +91,8 @@ def login():
                     else:
                         session.clear()
                         session['user_id'] = user[1]    # campo codigo_usuario de la tabla usuarios
+                        sesion_iniciada = True
+                        usuario = session['user_id']                        
                         return redirect( url_for( 'inicio' ) )
                 flash( error )
             else:
