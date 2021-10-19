@@ -21,7 +21,8 @@
 
                     {% from "_macro.html" import render_field %}
 
-                    <form action="/login" method="POST">
+                    <!-- <form action="/login" method="POST"> -->
+                    <form name="LoginForm" method="POST" action="{{ url_for('login') }}">
                         {{csrf_token}}
 
                         <div>

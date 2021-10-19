@@ -1,9 +1,21 @@
-from flask import Flask, render_template
-from flask import redirect, request
+import functools
+import os  
+from re import X
 
+from flask import Flask, render_template, flash, current_app
+from flask import redirect, request, url_for, session, g
+from flask.templating import render_template_string
+
+import utils
+from db import get_db, close_db
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from config import dev
 import forms
 
 app=Flask(__name__)
+app.config.from_object(dev)
+app.secret_key = os.urandom(24)
 
 opciones={
     1: "Editar/Crear proveedores",
@@ -27,33 +39,77 @@ usuario=None
 @app.route("/", methods=["GET"])
 @app.route("/inicio", methods=["GET"])
 def inicio():
-    # si ya inicio sesion 
-    # chequear el perfil
-    # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
-    return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=usuario)
+    if g.user: # si ya inicio sesion 
+       # chequear el perfil
+       # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
+       return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
+    return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=usuario)
+    
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     global sesion_iniciada, usuario
     login_form = forms.LoginForm(request.form)
 
-    if request.method=="POST":
-        sesion_iniciada=True
-        usuario = login_form.usuario.data
-        password = login_form.password.data
-        if usuario in usuarios:
-            if usuario == "SUPERADMIN":
-                return "Pagina de Super Administrador"
-            elif usuario == "ADMIN":
-                return render_template("home.html")
-            elif usuario == "USER":
-                return "Pagina de Usuario Final"
-        else:
-            sesion_iniciada=False
-            return redirect('/')
+    try:
+        if g.user:
+            return redirect( url_for( 'inicio' ) )
+        if request.method == 'POST':
+            db = get_db()
+            error = None
+            username = request.form['usuario']
+            password = request.form['password']
+            passHasheado = generate_password_hash(password)
+            print(passHasheado)
+            if not username:
+                error = 'Debes ingresar el usuario'
+                flash( error )
+                return render_template( 'login.html' )
 
-    return render_template("login.html", form = login_form)
+            if not password:
+                error = 'Contraseña requerida'
+                flash( error )
+                return render_template( 'login.html' )
+    
+            user = db.execute(
+                'SELECT * FROM usuarios WHERE codigo_usuario = ? AND password = ?', (username, password)
+            ).fetchone()
+            if user is None:
+                user = db.execute(
+                    "SELECT * FROM usuarios WHERE codigo_usuario = ?", (username,)
+                ).fetchone()
+                print(user)
+                if user is None:
+                    error = 'Usuario no existe'
+                else:
+                    #Validar contraseña hash            
+                    store_password = user[7]    # campo password de la tabla usuarios
+                    result = check_password_hash(store_password, password)
+                    if result is False:
+                        error = 'Contraseña inválida'
+                    else:
+                        session.clear()
+                        session['user_id'] = user[1]    # campo codigo_usuario de la tabla usuarios
+                        sesion_iniciada = True
+                        usuario = session['user_id']                        
+                        return redirect( url_for( 'inicio' ) )
+                flash( error )
+            else:
+                session.clear()
+                session['user_id'] = user[1]    # campo codigo_usuario de la tabla usuarios
+                if usuario == "SUPERADMIN":
+                    return "Pagina de Super Administrador"
+                elif usuario == "ADMIN":
+                    return render_template("home.html")
+                elif usuario == "USER":
+                    return redirect( url_for( 'inicio' ) )
+            flash( error )
+            close_db
+        return render_template("login.html", form = login_form)
+    except Exception as e:
+        print(e)
+        return render_template("login.html", form = login_form)
 
 
 @app.route("/salir", methods=["POST"])
@@ -92,6 +148,19 @@ def registro():
     # chequear el perfil
     return render_template('admin.html') 
     # "Administracion de Usuarios"
+
+
+@app.route('/articulos')
+def articulos():
+    if g.user:
+        sql = "Select * fom productos"
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute(sql)
+        articulos = cursor.fetchall()
+        return render_template_string("articulos.html", articulos=articulos)
+    else:
+        return redirect('login')
 
 
 @app.route("/productos/<id_productos>", methods=["GET", "POST"])
@@ -177,9 +246,26 @@ def ayuda():
     # render_template('ayuda.html')
 
 
+@app.before_request
+def load_logged_in_user():
+    user_id = session.get( 'user_id' )
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = get_db().execute(
+            'SELECT * FROM usuarios WHERE codigo_usuario = ?', (user_id,)
+        ).fetchone()
+
+@app.route( '/logout' )
+def logout():
+    session.clear()
+    return redirect( url_for( 'inicio' ) )
+
+
 @app.errorhandler(404)
 def page_not_found(error):
     return "Pagina No Encontrada ... ", 404
 
 if __name__ == '__main__':  #Cuando este corriendo de modo principal debe subir el servidor
-    app.run(debug=True)     #Para que cuando haga un cambio y guarde el servidor se actualiza enseguida
+    app.run() #app.run(debug=True)     #Para que cuando haga un cambio y guarde el servidor se actualiza enseguida
