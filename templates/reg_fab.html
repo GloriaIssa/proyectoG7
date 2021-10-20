@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+    <div class="v53_404"></div> 
+    <main>
+        <div class="formulario">
+            <section class="servicio">
+                <h2>INGRESAR</h2>
+                <div class="formulario">
+                    {% from "_macro.html" import render_field %}
+                    <form name="FabricanteForm" method="POST" action="{{ url_for('reg_fabricante') }}">
+                        <div>
+                            {{ render_field(form.cod_fab) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.tipoid_fab) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.nroid_fab) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.dv_nroid_fab) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.rsocial_fab) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.name_rep_fab) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.name_con_fab) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.email_fab) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.codigo_pais) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.ciudad) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.direccion) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.telefono) }}
+                        </div>
+                        <div>
+                            {{ render_field(form.celular) }}
+                        </div>
+                        <input type="submit" value="Aceptar" class="boton">
+                        <input type="submit" value="Cancelar" class="boton" action="/cancelar">
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>    
+{% endblock %}

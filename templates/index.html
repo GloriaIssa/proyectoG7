@@ -18,8 +18,7 @@
             <span>Inicio de sesión</span>
             {% if sesion_iniciada %}
                 <h2> Bienvenido </h2>
-                <form action="/salir" method="POST">
-                    {{csrf_token}}
+                <form action="\salir" method="POST">
                     <input type="submit" value="SALIR" class="boton">
                 </form>
             {% else %}    

@@ -5,6 +5,7 @@ from re import X
 from flask import Flask, render_template, flash, current_app
 from flask import redirect, request, url_for, session, g
 from flask.templating import render_template_string
+from datetime import datetime
 
 import utils
 from db import get_db, close_db
@@ -42,9 +43,9 @@ def inicio():
     if g.user: # si ya inicio sesion 
        # chequear el perfil
        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
-       return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
+       return render_template('home.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
-    return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=usuario)
+    return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
     
 
 @app.route("/login", methods=["GET", "POST"])
@@ -55,13 +56,13 @@ def login():
     try:
         if g.user:
             return redirect( url_for( 'inicio' ) )
+
         if request.method == 'POST':
             db = get_db()
             error = None
             username = request.form['usuario']
             password = request.form['password']
-            passHasheado = generate_password_hash(password)
-            print(passHasheado)
+            passhasheado = generate_password_hash(password)
             if not username:
                 error = 'Debes ingresar el usuario'
                 flash( error )
@@ -79,7 +80,6 @@ def login():
                 user = db.execute(
                     "SELECT * FROM usuarios WHERE codigo_usuario = ?", (username,)
                 ).fetchone()
-                print(user)
                 if user is None:
                     error = 'Usuario no existe'
                 else:
@@ -105,7 +105,7 @@ def login():
                 elif usuario == "USER":
                     return redirect( url_for( 'inicio' ) )
             flash( error )
-            close_db
+            close_db()
         return render_template("login.html", form = login_form)
     except Exception as e:
         print(e)
@@ -116,13 +116,16 @@ def login():
 def salir():
     global sesion_iniciada
     sesion_iniciada=False
-    return redirect('/')
+    g.user = None
+    session.clear()
+    return redirect( url_for( 'inicio' ) )
+
 
 @app.route("/cancelar", methods=["POST"])
 def cancelar():
     global sesion_iniciada
     sesion_iniciada=False
-    return redirect('/')
+    return redirect( url_for( 'inicio' ) )
 
 
 @app.route("/dashboard", methods=["GET", "POST"])
@@ -146,7 +149,7 @@ def admin():
 def registro():
     # si ya inicio sesion 
     # chequear el perfil
-    return render_template('admin.html') 
+    return render_template('registro_user.html') 
     # "Administracion de Usuarios"
 
 
@@ -158,6 +161,7 @@ def articulos():
         cursor = db.cursor()
         cursor.execute(sql)
         articulos = cursor.fetchall()
+        close_db()
         return render_template_string("articulos.html", articulos=articulos)
     else:
         return redirect('login')
@@ -176,20 +180,6 @@ def productos(id_productos):
         return  Lista_productos[id_productos]
     else:
         return  f"Error producto :{id_productos} no existe"
-
-
-    if id_productos in Lista_productos: 
-    # si ya inicio sesion 
-    # chequear el perfil
-        return  f"Pagina de Gestion de Productos : {id_productos}"
-    else:
-        return f"Error producto :{id_productos} no existe"
-    # si ya inicio sesion 
-    # chequear el perfil
-    return  "Pagina de Gestion de Productos"
-    # Editar / Crear Productos
-    # Consulta segun Filtro e Informes
-    # render_template('productos.html')
 
 
 @app.route("/productos/<opcion>", methods=["GET", "POST"])
@@ -237,6 +227,70 @@ def gestion_proveedores(opcion):
     # Editar / Crear Proveedores
     # render_template('gproveedor.html')"""
 
+
+@app.route( '/reg_fabricante', methods=('GET', 'POST') )
+def reg_fabricante():
+    if g.user==None:
+        return redirect( url_for( '/login' ) )
+    
+    reg_fab_form = forms.FabricanteForm(request.form)
+    try:
+        if request.method == 'POST':
+            cod_fab = request.form['cod_fab'] 
+            tid_fab = request.form['tipoid_fab']
+            nid_fab  = request.form['nroid_fab']
+            dv_fab = request.form['dv_nroid_fab'] 
+            rsocial = request.form['rsocial_fab']
+            nrep_fab = request.form['name_rep_fab']
+            ncon_fab = request.form['name_con_fab']
+            email = request.form['email_fab']
+            cpais = request.form['codigo_pais']
+            ciu_fab = request.form['ciudad']
+            dir_fab = request.form['direccion']
+            tel_fab = request.form['telefono']
+            cel_fab = request.form['celular'] 
+            cusuario = usuario
+            error = None
+            db = get_db()
+
+            if not utils.isNroidValid( nid_fab ):
+                error = "El Nro. de ID del Fabricante debe ser numerico."
+                print( error )
+                return render_template( 'reg_fab.html', form = reg_fab_form )
+
+            if not utils.isUsernameValid( rsocial ):
+                error = "El nombre del Fabricante debe ser alfanumerico o incluir solo '.','_','-'"
+                print( error )
+                return render_template( 'reg_fab.html', form = reg_fab_form )
+
+            if not utils.isEmailValid( email ):
+                error = 'Correo invalido'
+                print( error )
+                return render_template( 'reg_fab.html', form = reg_fab_form )
+
+            if db.execute( 'SELECT id_fabricante FROM fabricante WHERE nroid_fabricante = ?', (nid_fab,) ).fetchone() is not None:
+                error = 'Existe un Fabricante con ese Nro. de ID'.format( nid_fab )
+                print( error )
+                return render_template( 'reg_fab.html', form = reg_fab_form )
+
+            db.execute(
+                '''INSERT INTO fabricante (cod_fabricante, tipoid_fabricante, nroid_fabricante, dv_nroid, razon_social_fabricante, nombre_representante,
+                nombre_contacto, email_fabricante, codigo_pais, ciudad, direccion, telefono, celular, codigo_usuario) VALUES 
+                (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
+                (cod_fab, tid_fab, nid_fab, dv_fab, rsocial, nrep_fab, ncon_fab, email, cpais, ciu_fab, dir_fab, tel_fab, cel_fab, cusuario)
+            )
+            db.commit()
+            close_db()
+
+            print( 'Fabricante Registrado correctamente' )
+            return redirect( 'inicio' )
+        
+        return render_template( 'reg_fab.html', form = reg_fab_form )
+    except:
+        print('ERROR- REG FABRICANTE')
+        return render_template( 'reg_fab.html', form = reg_fab_form )
+
+
 @app.route("/ayuda", methods=["GET"])
 def ayuda():
     # si ya inicio sesion 
@@ -246,7 +300,7 @@ def ayuda():
     # render_template('ayuda.html')
 
 
-@app.before_request
+@app.before_request  # Decorador
 def load_logged_in_user():
     user_id = session.get( 'user_id' )
 
@@ -256,6 +310,7 @@ def load_logged_in_user():
         g.user = get_db().execute(
             'SELECT * FROM usuarios WHERE codigo_usuario = ?', (user_id,)
         ).fetchone()
+
 
 @app.route( '/logout' )
 def logout():
