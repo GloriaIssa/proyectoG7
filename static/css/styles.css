@@ -8,6 +8,7 @@
 html{
     font-size: 62.5%;
     box-sizing: border-box;
+    scroll-snap-type: y mandatory;    
 }
 
 *, *:before, *:after {
@@ -78,7 +79,7 @@ h3 {
     font-weight: normal;
 }
 
-.servicio .formulario{
+.servicio {
     align-items: center;
 }
 
@@ -198,6 +199,106 @@ h3 {
 
 span{
     font: size 2rem;
+}
+
+.formulario {
+  background-color: var(--gris);
+  padding: 2rem;
+  border-radius: 10px;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+.formulario legend {
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--blanco);
+  margin-bottom: 2rem;
+  display: block;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+@media (min-width:768px) {
+  .formulario {
+      max-width: 800px;
+      margin: 0 auto;
+  }
+}
+.contenedor-campos {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.campo {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+@media (min-width:480px) {
+  .campo {
+      display: flex;
+      align-items: center;
+  }
+}
+@media (min-width: 768px) {
+  .campo{
+      flex: 0 0 calc(50% - .5rem)
+  }
+}
+.campo label {
+  color: var(--blanco);
+  font-weight: 700;
+  margin-bottom: .5rem;
+  display: block;
+}
+@media (min-width:480px) {
+  .campo label {
+      flex: 0 0 90px;
+  }
+}
+
+.campo input[type="text"],
+.campo input[type="tel"],
+.campo input[type="mail"],
+.campo input[type="email"],
+.campo textarea {
+  width: 100%;
+  padding: .5rem;
+  border: none;
+  border-radius: .5rem;
+}
+@media (min-width: 768px) {
+  :is(.campo) :is( 
+      input[type="text"], 
+      input[type="tel"],  
+      input[type="email"], 
+      textarea ) {
+      flex: 1;
+  }
+}
+.w-100{
+  flex: 0 0 100%;
+}
+.campo textarea {
+  height: 4rem;
+}
+
+.enviar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.boton {
+  width: 100px;
+  height: 30px;
+  background: rgba(152, 172, 177);
+  opacity: 1;
+  border: 1px solid rgb(152, 172, 177);
+  border-radius: .5rem;
+  /* border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px; */
+  overflow: hidden;
 }
 
   .v50_198 {
@@ -338,18 +439,7 @@ span{
     left: 914px;
     overflow: hidden;
   }
-  .boton {
-    width: 100px;
-    height: 30px;
-    background: rgba(152, 172, 177);
-    opacity: 1;
-    border: 1px solid rgb(152, 172, 177);
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    overflow: hidden;
-  }
+  
   .v53_392 {
     width: 98px;
     color: rgba(255,255,255,1);
@@ -847,21 +937,7 @@ span{
   .name {
     color: #fff;
   }
-  .name {
-    color: #fff;
-  }
-  .name {
-    color: #fff;
-  }
-  .name {
-    color: #fff;
-  }
-  .name {
-    color: #fff;
-  }
-  .name {
-    color: #fff;
-  }
+
   .v88_213 {
     width: 18px;
     height: 10px;

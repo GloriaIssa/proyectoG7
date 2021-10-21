@@ -3,47 +3,52 @@
 {% block contenido %}
     <div class="v53_404"></div> 
     <main>
-        <div class="formulario">
+        <div>
             <section class="servicio">
-                <h2>INGRESAR</h2>
-                <div class="formulario">
+                <h2>INGRESAR FABRICANTE</h2>
+                <div>
                     {% from "_macro.html" import render_field %}
-                    <form name="FabricanteForm" method="POST" action="{{ url_for('reg_fabricante') }}">
-                        <div>
-                            {{ render_field(form.cod_fab) }}
+                    <form name="FabricanteForm" class="formulario" method="POST" action="{{ url_for('reg_fabricante') }}">
+                        <legend>Favor llenar todos los Campos</legend>
+                        <div class="contenedor-campos">
+                            <div class="campo">
+                                {{ render_field(form.cod_fab) }}
+                            </div>
+                            <div class="campo">
+                                {{ render_field(form.tipoid_fab) }}
+                            </div>
+                            <div class="campo">
+                                {{ render_field(form.nroid_fab) }}
+                            </div>
+                            <div class="campo">
+                                {{ render_field(form.dv_nroid_fab) }}
+                            </div>
+                            <div class="campo">
+                                {{ render_field(form.rsocial_fab) }}
+                            </div>
+                            <div class="campo">
+                                {{ render_field(form.name_rep_fab) }}
+                            </div>
+                            <div class="campo">
+                                {{ render_field(form.codigo_pais) }}
+                            </div>
+                            <div class="campo">
+                                {{ render_field(form.ciudad) }}
+                            </div>
+                            <div class="campo">
+                                {{ render_field(form.direccion) }}
+                            </div>
+                            <div class="campo">
+                                {{ render_field(form.telefono) }}
+                            </div>
+                            <div class="campo">
+                                {{ render_field(form.celular) }}
+                            </div>
                         </div>
-                        <div>
-                            {{ render_field(form.tipoid_fab) }}
-                        </div>
-                        <div>
-                            {{ render_field(form.nroid_fab) }}
-                        </div>
-                        <div>
-                            {{ render_field(form.dv_nroid_fab) }}
-                        </div>
-                        <div>
-                            {{ render_field(form.rsocial_fab) }}
-                        </div>
-                        <div>
-                            {{ render_field(form.name_rep_fab) }}
-                        </div>
-                        <div>
-                            {{ render_field(form.codigo_pais) }}
-                        </div>
-                        <div>
-                            {{ render_field(form.ciudad) }}
-                        </div>
-                        <div>
-                            {{ render_field(form.direccion) }}
-                        </div>
-                        <div>
-                            {{ render_field(form.telefono) }}
-                        </div>
-                        <div>
-                            {{ render_field(form.celular) }}
-                        </div>
-                        <input type="submit" value="Aceptar" class="boton">
-                        <input type="submit" value="Cancelar" class="boton" action="/cancelar">
+                        <div class="enviar">
+                            <input type="submit" value="Aceptar" class="boton">
+                            <input type="submit" value="Cancelar" class="boton" action="/cancelar">
+                        </div>                               
                     </form>
                 </div>
             </section>
