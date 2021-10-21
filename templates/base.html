@@ -13,6 +13,18 @@
         <link rel="preload" href="{{ url_for('static', filename= 'css/preload.css') }}" as="style" >
         <link rel="stylesheet" href="{{ url_for('static', filename= 'css/preload.css') }}">
     </head>
+
+    {% if g.user %}
+        <div class="nav-bg">
+            <nav class="navegacion contenedor">
+                <a href="{{ url_for('inicio') }}">Productos</a>
+                <a href="#">Proveedores</a>
+                <a href="{{ url_for('reg_fabricante') }}">Fabricantes</a>                
+                <a href="#">Configuracion</a>
+                <a href="{{ url_for('logout') }}">Salir</a>
+            </nav>
+        </div>    
+    {% endif %}        
     <body>
         {% block contenido %}
         {% endblock %}

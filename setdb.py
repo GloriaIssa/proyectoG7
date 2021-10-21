@@ -52,7 +52,7 @@ CREATE TABLE fabricante (
   telefono varchar(50) NOT NULL,
   celular varchar(50) NOT NULL,
   estado char(1) NOT NULL DEFAULT 1,
-  fecha_sistema datetime DEFAULT NULL,
+  fecha_sistema datetime DEFAULT CURRENT_TIMESTAMP,
   codigo_usuario varchar(15) NOT NULL
   );
     """)
