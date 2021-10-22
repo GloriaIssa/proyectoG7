@@ -46,3 +46,47 @@ class FabricanteForm(FlaskForm):
     telefono = StringField('Telefono', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
     celular = StringField('celular', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
     submit = SubmitField('Registrar Usuario')
+
+
+class AutosForm(FlaskForm):
+    cod_aut = StringField('Codigo Auto', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=15)])
+    name_aut = SelectField('Nombre Auto', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    Desc_aut = StringField('Descripcion', validators=[DataRequired(message='')])    
+    mod_aut = StringField('Modelo', validators=[DataRequired(message='')])
+    id_fab = StringField('ID Fabrica', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    lin_aut = StringField('Linea', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    est_aut = StringField('Estado', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    fec_sist = StringField('Fecha Sistema', validators=[DataRequired(message='No dejar vacío, completar')])
+    cod_user = StringField('Codigo Usuario', validators=[DataRequired(message='No dejar vacío, completar')])
+    submit = SubmitField('Registrar Usuario')
+
+class ProveedoresForm(FlaskForm):
+    cod_prov = StringField('Codigo Proveedor', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=15)])
+    tipoid_prov = SelectField('Tipo ID', choices=[("CC"), ("NUIP"), ("CE"), ("NIT")])
+    nroid_prov = StringField('Nro. ID', validators=[DataRequired(message='')])    
+    dv_nroid_prov = StringField('DV', validators=[DataRequired(message='')])
+    rsocial_prov = StringField('Razon Social', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    name_rep_prov = StringField('Nombre Representante', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    name_con_prov = StringField('Nombre Contacto', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    email_prov = EmailField('Email Fabricante', validators=[DataRequired(message='No dejar vacío, completar'), Email()])
+    codigo_pais = StringField('Pais', validators=[DataRequired(message='No dejar vacío, completar')])
+    ciudad = StringField('Ciudad', validators=[DataRequired(message='No dejar vacío, completar')])    
+    direccion = TextField('Direccion', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])    
+    telefono = StringField('Telefono', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
+    celular = StringField('celular', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
+    est_aut = StringField('Estado', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    fec_sist = StringField('Fecha Sistema', validators=[DataRequired(message='No dejar vacío, completar')])
+    cod_user = StringField('Codigo Usuario', validators=[DataRequired(message='No dejar vacío, completar')])
+    submit = SubmitField('Registrar Usuario')
+
+
+class ProductosForm(FlaskForm):
+    cod_prod = StringField('Codigo Producto', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=15)])
+    name_prod = SelectField('Nombre Producto', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    Desc_prod = StringField('Descripcion', validators=[DataRequired(message='')])    
+    cant_min_req = StringField('Cantidad Minima Requerida ', validators=[DataRequired(message='')])
+    cant_disp = StringField('Cantidad Disponible', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    est_aut = StringField('Estado', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    fec_sist = StringField('Fecha Sistema', validators=[DataRequired(message='No dejar vacío, completar')])
+    cod_user = StringField('Codigo Usuario', validators=[DataRequired(message='No dejar vacío, completar')])
+    submit = SubmitField('Registrar Usuario')
