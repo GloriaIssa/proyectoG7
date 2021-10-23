@@ -1,5 +1,5 @@
 import functools
-import os  
+import os
 from re import X
 
 from flask import Flask, render_template, flash, current_app
@@ -14,39 +14,40 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from config import dev
 import forms
 
-app=Flask(__name__)
+app = Flask(__name__)
 app.config.from_object(dev)
 app.secret_key = os.urandom(24)
 
-opciones={
+opciones = {
     1: "Editar/Crear proveedores",
     2: "Consultar Proveedores",
     3: "Eliminar Proveedores"}
 
-usuarios=("SUPERADMIN", "ADMIN", "USER")
+usuarios = ("SUPERADMIN", "ADMIN", "USER")
 
-Lista_productos={
+Lista_productos = {
     1001: "BMWi3",
     2001: "KIA NEW SPORTAGE 2.0",
     3001: "FORD EXPLORER LIMITED 3.5",
     4001: "Audi A5 Sportbag",
     5001: "Mercedes Benz E200"}
 
-Lista_proveedor=["BMW", "Audi", "Subaru", "Kia", "FORD", "Mercedes Benz"] 
+Lista_proveedor = ["BMW", "Audi", "Subaru", "Kia", "FORD", "Mercedes Benz"]
 
-sesion_iniciada=False
-usuario=None
+sesion_iniciada = False
+usuario = None
+
 
 @app.route("/", methods=["GET"])
 @app.route("/inicio", methods=["GET"])
 def inicio():
-    if g.user: # si ya inicio sesion 
-       # chequear el perfil
-       # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
-       return render_template('home.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
+    if g.user:  # si ya inicio sesion
+        # chequear el perfil
+        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
+        return render_template('home.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
     return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
-    
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -55,7 +56,7 @@ def login():
 
     try:
         if g.user:
-            return redirect( url_for( 'inicio' ) )
+            return redirect(url_for('inicio'))
 
         if request.method == 'POST':
             db = get_db()
@@ -65,16 +66,17 @@ def login():
             passhasheado = generate_password_hash(password)
             if not username:
                 error = 'Debes ingresar el usuario'
-                flash( error )
-                return render_template( 'login.html' )
+                flash(error)
+                return render_template('login.html')
 
             if not password:
                 error = 'Contraseña requerida'
-                flash( error )
-                return render_template( 'login.html' )
-    
+                flash(error)
+                return render_template('login.html')
+
             user = db.execute(
-                'SELECT * FROM usuarios WHERE codigo_usuario = ? AND password = ?', (username, password)
+                'SELECT * FROM usuarios WHERE codigo_usuario = ? AND password = ?', (
+                    username, password)
             ).fetchone()
             if user is None:
                 user = db.execute(
@@ -83,73 +85,76 @@ def login():
                 if user is None:
                     error = 'Usuario no existe'
                 else:
-                    #Validar contraseña hash            
-                    store_password = user[7]    # campo password de la tabla usuarios
+                    # Validar contraseña hash
+                    # campo password de la tabla usuarios
+                    store_password = user[7]
                     result = check_password_hash(store_password, password)
                     if result is False:
                         error = 'Contraseña inválida'
                     else:
                         session.clear()
-                        session['user_id'] = user[1]    # campo codigo_usuario de la tabla usuarios
+                        # campo codigo_usuario de la tabla usuarios
+                        session['user_id'] = user[1]
                         sesion_iniciada = True
-                        usuario = session['user_id']                        
-                        return redirect( url_for( 'inicio' ) )
-                flash( error )
+                        usuario = session['user_id']
+                        return redirect(url_for('inicio'))
+                flash(error)
             else:
                 session.clear()
-                session['user_id'] = user[1]    # campo codigo_usuario de la tabla usuarios
+                # campo codigo_usuario de la tabla usuarios
+                session['user_id'] = user[1]
                 if usuario == "SUPERADMIN":
                     return "Pagina de Super Administrador"
                 elif usuario == "ADMIN":
                     return render_template("home.html")
                 elif usuario == "USER":
-                    return redirect( url_for( 'inicio' ) )
-            flash( error )
+                    return redirect(url_for('inicio'))
+            flash(error)
             close_db()
-        return render_template("login.html", form = login_form)
+        return render_template("login.html", form=login_form)
     except Exception as e:
         print(e)
-        return render_template("login.html", form = login_form)
+        return render_template("login.html", form=login_form)
 
 
 @app.route("/salir", methods=["POST"])
 def salir():
     global sesion_iniciada
-    sesion_iniciada=False
+    sesion_iniciada = False
     g.user = None
     session.clear()
-    return redirect( url_for( 'inicio' ) )
+    return redirect(url_for('inicio'))
 
 
 @app.route("/cancelar", methods=["POST"])
 def cancelar():
     global sesion_iniciada
-    sesion_iniciada=False
-    return redirect( url_for( 'inicio' ) )
+    sesion_iniciada = False
+    return redirect(url_for('inicio'))
 
 
 @app.route("/dashboard", methods=["GET", "POST"])
 def dashboard():
-    # si ya inicio sesion 
+    # si ya inicio sesion
     # chequear el perfil
     # segun el perfil mostrar informacion de acuerdo a él.
-    return "Dashboard con Informacion del Inventario de Autos segun Perfil" 
-    #render_template('index.html')
+    return "Dashboard con Informacion del Inventario de Autos segun Perfil"
+    # render_template('index.html')
 
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
-    # si ya inicio sesion 
+    # si ya inicio sesion
     # chequear el perfil
-    return render_template('admin.html') 
+    return render_template('admin.html')
     # "Administracion de Usuarios"
 
 
 @app.route("/registro", methods=["GET", "POST"])
 def registro():
-    # si ya inicio sesion 
+    # si ya inicio sesion
     # chequear el perfil
-    return render_template('registro_user.html') 
+    return render_template('registro_user.html')
     # "Administracion de Usuarios"
 
 
@@ -169,39 +174,39 @@ def articulos():
 
 @app.route("/productos/<id_productos>", methods=["GET", "POST"])
 def productos(id_productos):
-    #LogicaAlgoritm Sprint 3
-    
+    # LogicaAlgoritm Sprint 3
+
     try:
-        id_productos= int(id_productos)
+        id_productos = int(id_productos)
     except Exception as e:
         opcion = 0
 
     if id_productos in Lista_productos:
-        return  Lista_productos[id_productos]
+        return Lista_productos[id_productos]
     else:
-        return  f"Error producto :{id_productos} no existe"
+        return f"Error producto :{id_productos} no existe"
 
 
 @app.route("/productos/<opcion>", methods=["GET", "POST"])
 def gestion_productos(opcion):
-    # si ya inicio sesion 
+    # si ya inicio sesion
     # chequear el perfil
     opcion = int(opcion)
     if opcion == 1:
-        return  "Opcion 1 Editar/Crear Productos"
+        return "Opcion 1 Editar/Crear Productos"
     else:
-        return  "Opcion 2 Consultar Productos"
+        return "Opcion 2 Consultar Productos"
     # Editar / Crear Productos
     # render_template('gproductos.html')
 
 
-@app.route("/proveedores/<id_proveedor>", methods=["GET", "POST"]) 
+@app.route("/proveedores/<id_proveedor>", methods=["GET", "POST"])
 def proveedores(id_proveedor):
-    #LogicaAlgoritm Sprint 3
-    if id_proveedor in Lista_proveedor: 
-    # si ya inicio sesion 
-    # chequear el perfil
-        return  f"Pagina de Gestion de Proveedores : {id_proveedor}"
+    # LogicaAlgoritm Sprint 3
+    if id_proveedor in Lista_proveedor:
+        # si ya inicio sesion
+        # chequear el perfil
+        return f"Pagina de Gestion de Proveedores : {id_proveedor}"
     else:
         return f"Error proveedor :{id_proveedor} no existe"
     # Editar / Crear Proveedores
@@ -210,36 +215,36 @@ def proveedores(id_proveedor):
 
 @app.route("/proveedor/<opcion>", methods=["GET", "POST"])
 def gestion_proveedores(opcion):
-    #return  "Opcion 1 Editar/Crear Proveedor"
-    # si ya inicio sesion 
+    # return  "Opcion 1 Editar/Crear Proveedor"
+    # si ya inicio sesion
     # chequear el perfil
 
-    #LogicaAlgoritm Sprint3
+    # LogicaAlgoritm Sprint3
     try:
-        opcion= int(opcion)
+        opcion = int(opcion)
     except Exception as e:
         opcion = 0
 
     if opcion in opciones:
-        return  opciones[opcion]
+        return opciones[opcion]
     else:
-        return  "Opcion Invalida"
+        return "Opcion Invalida"
     # Editar / Crear Proveedores
     # render_template('gproveedor.html')"""
 
 
-@app.route( '/reg_fabricante', methods=('GET', 'POST') )
+@app.route('/reg_fabricante', methods=('GET', 'POST'))
 def reg_fabricante():
-    if g.user==None:
-        return redirect( url_for( '/login' ) )
-    
+    if g.user == None:
+        return redirect(url_for('/login'))
+
     reg_fab_form = forms.FabricanteForm(request.form)
     try:
         if request.method == 'POST':
-            cod_fab = request.form['cod_fab'] 
+            cod_fab = request.form['cod_fab']
             tid_fab = request.form['tipoid_fab']
-            nid_fab  = request.form['nroid_fab']
-            dv_fab = request.form['dv_nroid_fab'] 
+            nid_fab = request.form['nroid_fab']
+            dv_fab = request.form['dv_nroid_fab']
             rsocial = request.form['rsocial_fab']
             nrep_fab = request.form['name_rep_fab']
             ncon_fab = request.form['name_con_fab']
@@ -248,61 +253,63 @@ def reg_fabricante():
             ciu_fab = request.form['ciudad']
             dir_fab = request.form['direccion']
             tel_fab = request.form['telefono']
-            cel_fab = request.form['celular'] 
+            cel_fab = request.form['celular']
             cusuario = usuario
             error = None
             db = get_db()
 
-            if not utils.isNroidValid( nid_fab ):
+            if not utils.isNroidValid(nid_fab):
                 error = "El Nro. de ID del Fabricante debe ser numerico."
-                print( error )
-                return render_template( 'reg_fab.html', form = reg_fab_form )
+                print(error)
+                return render_template('reg_fab.html', form=reg_fab_form)
 
-            if not utils.isUsernameValid( rsocial ):
+            if not utils.isUsernameValid(rsocial):
                 error = "El nombre del Fabricante debe ser alfanumerico o incluir solo '.','_','-'"
-                print( error )
-                return render_template( 'reg_fab.html', form = reg_fab_form )
+                print(error)
+                return render_template('reg_fab.html', form=reg_fab_form)
 
-            if not utils.isEmailValid( email ):
+            if not utils.isEmailValid(email):
                 error = 'Correo invalido'
-                print( error )
-                return render_template( 'reg_fab.html', form = reg_fab_form )
+                print(error)
+                return render_template('reg_fab.html', form=reg_fab_form)
 
-            if db.execute( 'SELECT id_fabricante FROM fabricante WHERE nroid_fabricante = ?', (nid_fab,) ).fetchone() is not None:
-                error = 'Existe un Fabricante con ese Nro. de ID'.format( nid_fab )
-                print( error )
-                return render_template( 'reg_fab.html', form = reg_fab_form )
+            if db.execute('SELECT id_fabricante FROM fabricante WHERE nroid_fabricante = ?', (nid_fab,)).fetchone() is not None:
+                error = 'Existe un Fabricante con ese Nro. de ID'.format(
+                    nid_fab)
+                print(error)
+                return render_template('reg_fab.html', form=reg_fab_form)
 
             db.execute(
                 '''INSERT INTO fabricante (cod_fabricante, tipoid_fabricante, nroid_fabricante, dv_nroid, razon_social_fabricante, nombre_representante,
                 nombre_contacto, email_fabricante, codigo_pais, ciudad, direccion, telefono, celular, codigo_usuario) VALUES 
                 (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
-                (cod_fab, tid_fab, nid_fab, dv_fab, rsocial, nrep_fab, ncon_fab, email, cpais, ciu_fab, dir_fab, tel_fab, cel_fab, cusuario)
+                (cod_fab, tid_fab, nid_fab, dv_fab, rsocial, nrep_fab, ncon_fab,
+                 email, cpais, ciu_fab, dir_fab, tel_fab, cel_fab, cusuario)
             )
             db.commit()
             close_db()
 
-            print( 'Fabricante Registrado correctamente' )
-            return redirect( 'inicio' )
-        
-        return render_template( 'reg_fab.html', form = reg_fab_form )
+            print('Fabricante Registrado correctamente')
+            return redirect('inicio')
+
+        return render_template('reg_fab.html', form=reg_fab_form)
     except:
         print('ERROR- REG FABRICANTE')
-        return render_template( 'reg_fab.html', form = reg_fab_form )
+        return render_template('reg_fab.html', form=reg_fab_form)
 
 
 @app.route("/ayuda", methods=["GET"])
 def ayuda():
-    # si ya inicio sesion 
+    # si ya inicio sesion
     # chequear el perfil
-    return  "Manual de Gestión de DAIMLER"
+    return render_template('config.html')
     # Ayuda en General con aceso a Videos.
     # render_template('ayuda.html')
 
 
 @app.before_request  # Decorador
 def load_logged_in_user():
-    user_id = session.get( 'user_id' )
+    user_id = session.get('user_id')
 
     if user_id is None:
         g.user = None
@@ -312,15 +319,16 @@ def load_logged_in_user():
         ).fetchone()
 
 
-@app.route( '/logout' )
+@app.route('/logout')
 def logout():
     session.clear()
-    return redirect( url_for( 'inicio' ) )
+    return redirect(url_for('inicio'))
 
 
 @app.errorhandler(404)
 def page_not_found(error):
     return "Pagina No Encontrada ... ", 404
 
-if __name__ == '__main__':  #Cuando este corriendo de modo principal debe subir el servidor
-    app.run() #app.run(debug=True)     #Para que cuando haga un cambio y guarde el servidor se actualiza enseguida
+
+if __name__ == '__main__':  # Cuando este corriendo de modo principal debe subir el servidor
+    app.run()  # app.run(debug=True)     #Para que cuando haga un cambio y guarde el servidor se actualiza enseguida
