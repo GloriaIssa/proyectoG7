@@ -351,6 +351,25 @@ span{
     overflow: hidden;
   }
 
+  
+  .v52_354 {
+    width: 720px;
+    height: 70%; 
+    background: url("../img/Superadmin.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    opacity: 1;
+    position: absolute;
+    top: 10px;
+    left: 150px;
+    border-top-right-radius: 75px;
+    border-bottom-right-radius: 75px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
   .v52_355 {
     width: 785px;
     height: 100%;
@@ -687,7 +706,7 @@ span{
   }
   .v29_179 {
     width: 248px;
-    color: rgb(7, 247, 99);
+    color: green;
     position:relative;
     top: 180px;
     left: 100px;
