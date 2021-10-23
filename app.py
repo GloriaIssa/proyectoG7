@@ -37,8 +37,8 @@ Lista_proveedor=["BMW", "Audi", "Subaru", "Kia", "FORD", "Mercedes Benz"]
 sesion_iniciada=False
 usuario=None
 
-@app.route("/", methods=["GET"])
-@app.route("/inicio", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
+@app.route("/inicio", methods=["GET", "POST"])
 def inicio():
     if g.user: # si ya inicio sesion 
        # chequear el perfil
@@ -289,6 +289,72 @@ def reg_fabricante():
     except:
         print('ERROR- REG FABRICANTE')
         return render_template( 'reg_fab.html', form = reg_fab_form )
+
+
+@app.route( '/reg_proveedor', methods=('GET', 'POST') )
+def reg_proveedor():
+    if g.user==None:
+        return redirect( url_for( '/login' ) )
+    
+    reg_prov_form = forms.ProveedoresForm(request.form)
+    try:
+        if request.method == 'POST':
+            cod_prov = request.form['cod_prov'] 
+            tipoid_prov = request.form['tipoid_prov']
+            nroid_prov  = request.form['nroid_prov']
+            dv_nroid_prov = request.form['dv_nroid_prov'] 
+            rsocial_prov = request.form['rsocial_prov']
+            name_rep_prov = request.form['name_rep_prov']
+            name_con_prov = request.form['name_con_prov']
+            email_prov = request.form['email_prov']
+            codigo_pais = request.form['codigo_pais']
+            ciudad = request.form['ciudad']
+            direccion = request.form['direccion']
+            telefono = request.form['telefono']
+            celular = request.form['celular'] 
+            est_aut = request.form['est_aut']
+            fec_sist = request.form['fec_sist']
+            cod_user = request.form['cod_user']
+            cusuario = usuario
+            error = None
+            db = get_db()
+
+            if not utils.isNroidValid( nroid_prov ):
+                error = "El Nro. de ID del Fabricante debe ser numerico."
+                print( error )
+                return render_template( 'reg_proveed.html', form = reg_prov_form )
+
+            if not utils.isUsernameValid( rsocial_prov ):
+                error = "El nombre del Fabricante debe ser alfanumerico o incluir solo '.','_','-'"
+                print( error )
+                return render_template( 'reg_proveed.html', form = reg_prov_form )
+
+            if not utils.isEmailValid( email_prov ):
+                error = 'Correo invalido'
+                print( error )
+                return render_template( 'reg_proveed.html', form = reg_prov_form )
+
+            if db.execute( 'SELECT nroid_proveedor FROM proveedor WHERE nroid_prov = ?', (nroid_prov,) ).fetchone() is not None:
+                error = 'Existe un Fabricante con ese Nro. de ID'.format( nroid_prov )
+                print( error )
+                return render_template( 'reg_proveed.html', form = reg_prov_form )
+
+            db.execute(
+                '''INSERT INTO proveedor (codigo_proveedor, tipoid_proveedor, nroid_proveedor, dv_nroid, razon_social_proveedor, nombre_representante,
+                nombre_contacto, email_proveedor, codigo_pais, ciudad, direccion, telefono, celular, estado, fecha_sistema, codigo_usuario) VALUES 
+                (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
+                (cod_prov, tipoid_prov, nroid_prov, dv_nroid_prov, rsocial_prov, name_rep_prov, name_con_prov, email_prov, codigo_pais, ciudad, direccion, telefono, celular, est_aut, fec_sist, cod_user, cusuario)
+            )
+            db.commit()
+            close_db()
+
+            print( 'Proveedor Registrado correctamente' )
+            return redirect( 'inicio' )
+        
+        return render_template( 'reg_proveed.html', form = reg_prov_form )
+    except:
+        print('ERROR - REGISTRO DE PROVEEDORES')
+        return render_template( 'reg_proveed.html', form = reg_prov_form )
 
 
 @app.route("/ayuda", methods=["GET"])

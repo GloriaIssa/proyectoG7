@@ -70,7 +70,7 @@ CREATE TABLE productos (
   cminima_rq_bodega decimal(15,0) DEFAULT NULL,
   cdisponible_bodega decimal(15,0) DEFAULT NULL,
   estado char(1) NOT NULL DEFAULT 1,
-  fecha_sistema datetime DEFAULT NULL,
+  fecha_sistema datetime DEFAULT CURRENT_TIMESTAMP,
   codigo_usuario varchar(15) NOT NULL
   );
     """)
@@ -88,7 +88,7 @@ CREATE TABLE autos (
   id_fabricante int(11) DEFAULT NULL REFERENCES fabricante(id_fabricante) ON DELETE NO ACTION ON UPDATE CASCADE,
   linea varchar(15) DEFAULT NULL,
   estado char(1) NOT NULL DEFAULT 1,
-  fecha_sistema datetime DEFAULT NULL,
+  fecha_sistema datetime DEFAULT CURRENT_TIMESTAMP,
   codigo_usuario varchar(15) NOT NULL
   );
     """)
@@ -113,7 +113,7 @@ CREATE TABLE proveedor (
   telefono varchar(50) NOT NULL,
   celular varchar(50) NOT NULL,
   estado char(1) NOT NULL DEFAULT 1,
-  fecha_sistema datetime DEFAULT NULL,
+  fecha_sistema datetime DEFAULT CURRENT_TIMESTAMP,
   codigo_usuario varchar(15) NOT NULL
   );
     """)
@@ -169,10 +169,10 @@ except Exception as e:
 try:
     pibote.execute ("""
 CREATE TABLE produ_auto (
-  id_producto int NOT NULL,
-  id_auto int NOT NULL,
-  fecha_sistema datetime DEFAULT NULL REFERENCES productos(id_producto) ON DELETE RESTRICT ON UPDATE CASCADE,
-  codigo_usuario varchar(15) NOT NULL REFERENCES autos(id_auto) ON DELETE RESTRICT ON UPDATE CASCADE,
+  id_producto int NOT NULL REFERENCES productos(id_producto) ON DELETE RESTRICT ON UPDATE CASCADE,
+  id_auto int NOT NULL REFERENCES autos(id_auto) ON DELETE RESTRICT ON UPDATE CASCADE,
+  fecha_sistema datetime DEFAULT NULL,
+  codigo_usuario varchar(15) NOT NULL,
   PRIMARY KEY (id_producto, id_auto)
 );
     """)
@@ -184,7 +184,7 @@ try:
 CREATE TABLE produ_prov (
   id_producto int NOT NULL REFERENCES productos(id_producto) ON DELETE RESTRICT ON UPDATE CASCADE,
   id_proveedor int NOT NULL REFERENCES proveedor(id_proveedor) ON DELETE RESTRICT ON UPDATE CASCADE,
-  fecha_sistema datetime DEFAULT NULL,
+  fecha_sistema datetime DEFAULT CURRENT_TIMESTAMP,
   codigo_usuario varchar(15) NOT NULL,
   PRIMARY KEY (id_producto, id_proveedor)
 );
