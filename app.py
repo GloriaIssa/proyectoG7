@@ -319,9 +319,6 @@ def reg_proveedor():
             direccion = request.form['direccion']
             telefono = request.form['telefono']
             celular = request.form['celular'] 
-            est_aut = request.form['est_aut']
-            fec_sist = request.form['fec_sist']
-            cod_user = request.form['cod_user']
             cusuario = usuario
             error = None
             db = get_db()
@@ -348,9 +345,9 @@ def reg_proveedor():
 
             db.execute(
                 '''INSERT INTO proveedor (codigo_proveedor, tipoid_proveedor, nroid_proveedor, dv_nroid, razon_social_proveedor, nombre_representante,
-                nombre_contacto, email_proveedor, codigo_pais, ciudad, direccion, telefono, celular, estado, fecha_sistema, codigo_usuario) VALUES 
+                nombre_contacto, email_proveedor, codigo_pais, ciudad, direccion, telefono, celular, codigo_usuario) VALUES 
                 (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
-                (cod_prov, tipoid_prov, nroid_prov, dv_nroid_prov, rsocial_prov, name_rep_prov, name_con_prov, email_prov, codigo_pais, ciudad, direccion, telefono, celular, est_aut, fec_sist, cod_user, cusuario)
+                (cod_prov, tipoid_prov, nroid_prov, dv_nroid_prov, rsocial_prov, name_rep_prov, name_con_prov, email_prov, codigo_pais, ciudad, direccion, telefono, celular, cusuario)
             )
             db.commit()
             close_db()

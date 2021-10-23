@@ -44,7 +44,7 @@ class FabricanteForm(FlaskForm):
     ciudad = StringField('Ciudad', validators=[DataRequired(message='No dejar vacío, completar')])    
     direccion = TextField('Direccion', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])    
     telefono = StringField('Telefono', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
-    celular = StringField('celular', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
+    celular = StringField('Celular', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
     submit = SubmitField('Registrar Usuario')
 
 
@@ -73,10 +73,7 @@ class ProveedoresForm(FlaskForm):
     ciudad = StringField('Ciudad', validators=[DataRequired(message='No dejar vacío, completar')])    
     direccion = TextField('Direccion', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])    
     telefono = StringField('Telefono', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
-    celular = StringField('celular', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
-    est_aut = StringField('Estado', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
-    fec_sist = StringField('Fecha Sistema', validators=[DataRequired(message='No dejar vacío, completar')])
-    cod_user = StringField('Codigo Usuario', validators=[DataRequired(message='No dejar vacío, completar')])
+    celular = StringField('Celular', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
     submit = SubmitField('Registrar Usuario')
 
 
