@@ -2,3 +2,7 @@
     <td> {{ field.label }} 
     <dd> {{ field(**kwargs)|safe }}
 {% endmacro %}
+
+{% macro r_field(field) %}
+    <td> {{ field.label }} 
+{% endmacro %}

@@ -253,6 +253,58 @@ try:
 except Exception as e:
     print(e)
 
+try: 
+    pibote.execute("""
+    Insert into productos ( codigo_producto, nombre_producto,descripcion, cminima_rq_bodega, 
+            cdisponible_bodega, codigo_usuario) 
+    Values ('10', 'Retrovisor', 'Retrovisor de auto', 10, 200, 'Administrador'),
+           ('20', 'Plumilla', 'Retrovisor de auto', 15, 200, 'Administrador'),
+            ('30', 'LLanta', 'Retrovisor de auto', 100, 200, 'Administrador'),
+            ('40', 'Puerta', 'Retrovisor de auto', 1, 200, 'Administrador'),
+            ('50', 'Panoramico', 'Retrovisor de auto', 20, 200, 'Administrador'),
+            ('60', 'Capó', 'Retrovisor de auto', 25, 200, 'Administrador'),
+            ('70', 'Timon', 'Retrovisor de auto', 30, 200, 'Administrador'),
+            ('80', 'Radio', 'Retrovisor de auto', 40, 200, 'Administrador'),
+            ('90', 'Asiento', 'Retrovisor de auto', 20, 200, 'Administrador'),
+            ('100', 'Palanca de Cambio', 'Retrovisor de auto', 40, 200, 'Administrador'),
+            ('110', 'Eleva Vidrio', 'Retrovisor de auto', 25, 100, 'Administrador'),
+            ('120', 'Alarma', 'Retrovisor de auto', 10, 200, 'Administrador'),
+            ('130', 'Aire Acondicionado', 'Retrovisor de auto', 100, 200, 'Administrador'),
+            ('140', 'Alternador', 'Retrovisor de auto', 50, 200, 'Administrador'),
+            ('150', 'CPU', 'Retrovisor de auto', 70, 200, 'Administrador'),
+            ('160', 'Motor', 'Retrovisor de auto', 30, 200, 'Administrador'),
+            ('170', 'Bujia', 'Retrovisor de auto', 45, 200, 'Administrador'),
+            ('180', 'Inyector', 'Retrovisor de auto', 60, 200, 'Administrador');
+       """)
+except Exception as e:
+    print(e)
+
+try: 
+    pibote.execute("""
+    Insert into fabricante (cod_fabricante, tipoid_fabricante, nroid_fabricante, dv_nroid, razon_social_fabricante,
+                        nombre_representante, nombre_contacto, email_fabricante, codigo_pais, ciudad, direccion,
+                        telefono, celular,codigo_usuario)
+    Values ('111001', 'NIT', '910000100', '1', 'Alfa Romeo', 'Romeo Santos', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('211001', 'NIT', '902100100', '1', 'Aston Martin', 'Martin de los Santos', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('311001', 'NIT', '901010101', '1', 'Cadillac', 'Alicia Cadisus', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('411001', 'NIT', '890023102', '1', 'Ferrari', 'Romeo Santos', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('511001', 'NIT', '8202000103', '1', 'Lamborghini', 'Romeo Santos', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('611001', 'NIT', '7800020104', '1', 'Jeep', 'Ksius Clay', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('711001', 'NIT', '190040105', '1', 'Chevrolet', 'Let Chevro', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('811001', 'NIT', '590002006', '1', 'Honda', 'Bruce Honda', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('911001', 'NIT', '490020407', '1', 'Volskswagen', 'Haggen Klutz', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador');
+    """)
+except Exception as e:
+    print(e)
 
 try: 
     pibote.execute("""

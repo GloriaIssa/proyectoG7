@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block contenido %}
-    <div class="v50_198 servicios">
-        <div class="v52_355">
+    <div class="bg_app servicios">
+        <div class="logo_intro">
             <div class="content-daimler">
                 {% if sesion_iniciada %}
                     <h2 class="titulo">BIENVENIDO AL SISTEMA DE INVENTARIO</h2>            
@@ -13,7 +13,7 @@
                 <a href="#">Contactar</a>        
             </div>
         </div>
-        <div class="v52_358"></div>
+        <div class="logo_inicio"></div>
         <div class="formulario">
             <span>Inicio de sesión</span>
             {% if sesion_iniciada %}
@@ -24,9 +24,6 @@
             {% else %}    
                 <h2> Ingresar al <a href="\login">SISTEMA</a> </h2>
             {% endif %}
-        </div>
-        
-        <!--<div class="v53_366"></div>
-        <div class="v53_386"></div>-->
+        </div>       
     </div>
 {% endblock %}

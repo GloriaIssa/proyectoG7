@@ -45,8 +45,24 @@ class FabricanteForm(FlaskForm):
     direccion = TextField('Direccion', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])    
     telefono = StringField('Telefono', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
     celular = StringField('Celular', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
-    submit = SubmitField('Registrar Usuario')
+    submit = SubmitField('Registrar Fabricante')
 
+class EditFabForm(FlaskForm):
+    id_fab = StringField('ID.', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=15)])
+    cod_fab = StringField('Codigo Fabricante', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=15)])
+    tipoid_fab = SelectField('Tipo ID', choices=[("CC"), ("NUIP"), ("CE"), ("NIT")])
+    nroid_fab = StringField('Nro. ID', validators=[DataRequired(message='')])    
+    dv_nroid_fab = StringField('DV', validators=[DataRequired(message='')])
+    rsocial_fab = StringField('Razon Social', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    name_rep_fab = StringField('Nombre Representante', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    name_con_fab = StringField('Nombre Contacto', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    email_fab = EmailField('Email Fabricante', validators=[DataRequired(message='No dejar vacío, completar'), Email()])
+    codigo_pais = StringField('Pais', validators=[DataRequired(message='No dejar vacío, completar')])
+    ciudad = StringField('Ciudad', validators=[DataRequired(message='No dejar vacío, completar')])    
+    direccion = TextField('Direccion', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])    
+    telefono = StringField('Telefono', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
+    celular = StringField('Celular', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
+    submit = SubmitField('Actualiza Fabricante')
 
 class AutosForm(FlaskForm):
     cod_aut = StringField('Codigo Auto', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=15)])

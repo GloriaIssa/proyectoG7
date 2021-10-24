@@ -15,3 +15,13 @@ listElements.forEach(listElement => {
 
     })
 });
+
+function mostrarPassword(){
+    var objeto = document.getElementById("password");
+    objeto.type = "text";
+}
+
+function ocultarPassword(){
+    var obj = document.getElementById("password");
+    obj.type = "password";
+}

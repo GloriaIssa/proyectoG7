@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block cont_menu %}
+<div class="form_menu">     
+    <h2>INFORMACION FABRICANTES</h2>   
+  <table class="info_show table table-striped table-inverse table-responsive" style="width:100%;zoom:80%">
+      <thead class="thead-inverse">
+          <tr>
+            <th>#Id</th>
+            <th>T.Id</th>                                        
+            <th>Nro. Id</th>
+            <th>Razon Social</th>
+            <th>Representante</th>
+            <th>Correo</th>
+            <th>Telefóno</th>
+            <th>Celular</th>
+            <th>Ciudad</th>
+            <th>Dirección</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+          </thead>
+          <tbody>
+              {%for fabricantes in fabricantes %}
+              <tr>
+                  <td scope="row"></td>
+                  <td>{{fabricantes[1]}} </td>
+                  <td>{{fabricantes[2]}} </td>                                    
+                  <td>{{fabricantes[3]}} </td>                  
+                  <td>{{fabricantes[5]}} </td>                                    
+                  <td>{{fabricantes[6]}} </td>
+                  <td>{{fabricantes[8]}} </td>                                    
+                  <td>{{fabricantes[12]}} </td>                  
+                  <td>{{fabricantes[13]}} </td>
+                  <td>{{fabricantes[10]}} </td>                                    
+                  <td>{{fabricantes[11]}} </td>
+                  <td>{{fabricantes[14]}} </td> 
+                  <td> <a href="/edit_fab/{{fabricantes[0]}}">Editar</a> | <a href="/del_fab/{{fabricantes[0]}}">Borrar</a></td>
+              </tr>
+              {%endfor %}
+          </tbody>
+  </table>  
+</div>
+{% endblock %}
