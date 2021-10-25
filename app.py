@@ -288,7 +288,6 @@ def edit_fab(id):
             db.commit()
             close_db()
             return redirect(url_for('crud_fabricante'))
-            return render_template("show_fab.html", sesion_iniciada=sesion_iniciada, usuario=g.user)
     else:
         return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
@@ -384,13 +383,11 @@ def edit_prod(id):
             cod_prod = request.form['cod_prod']
             name_prod = request.form['name_prod']
             desc_prod = request.form['desc_prod']
-            cant_min_req = request.form['cant_min_req']
-            cant_disp = request.form['cant_disp']
-            cusuario = usuario
+            cant_min_req = float(request.form['cant_min_req'])
+            cant_disp = float(request.form['cant_disp'])
 
-            sql = '''Update producto set codigo_producto=?, nombre_producto=?, descripcion=?, 
-                cminima_rq_bodega=?, cdisponible_bodega=?)
-                Where id_producto =?;'''
+            sql = '''Update productos set codigo_producto=?, nombre_producto=?, descripcion=?,
+                cminima_rq_bodega=?, cdisponible_bodega=?) Where id_producto =?;'''
             datos =(cod_prod, name_prod, desc_prod, cant_min_req, cant_disp, id) 
             db = get_db()
             cursor = db.cursor()
@@ -411,7 +408,7 @@ def del_prod(id):
         db.execute("delete from productos where id_producto=?", (id,))
         db.commit()
         close_db()
-        return render_template("show_prod.html", sesion_iniciada=sesion_iniciada, usuario=g.user)
+        return redirect(url_for('crud_productos'))
     else:
         return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
@@ -511,7 +508,7 @@ def del_prov(id):
         db.execute("delete from proveedor where id_proveedor=?", (id,))
         db.commit()
         close_db()
-        return render_template("show_provee.html", sesion_iniciada=sesion_iniciada, usuario=g.user)
+        return redirect(url_for('crud_proveedor'))
     else:
         return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
@@ -522,7 +519,6 @@ def ayuda():
     return render_template('config.html')
     # Ayuda en General con aceso a Videos.
     # render_template('ayuda.html')
-
 
 @app.before_request  # Decorador
 def load_logged_in_user():
