@@ -18,7 +18,14 @@
                 </div>
                 <div class="campo">
                     {{ r_field(form.tipoid_fab) }}
-                    <input type="text" value={{fabricantes[2]}} name="tipoid_fab" id="tipoid_fab">
+                    <select name="tipoid_fab" id="tipoid_fab" selected value={{fabricantes[2]}}>
+                        <!-- Opciones de la lista -->
+                        <option value="CC">CC</option>
+                        <option value="NUIP" selected>NUIP</option> <!-- Opción por defecto -->
+                        <option value="CE">CE</option>
+                        <option value="NIT">NIT</option>
+                      </select>
+                    <!-- <input type="text" value={{fabricantes[2]}} name="tipoid_fab" id="tipoid_fab"> -->
                 </div>
                 <div class="campo">
                     {{ r_field(form.nroid_fab) }}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block cont_menu %}
+<div class="form_menu">     
+    <h2>INFORMACION PROVEEDORES</h2>   
+  <table class="info_show table table-striped table-inverse table-responsive">
+      <thead class="thead-inverse">
+          <tr>
+            <th>#Id</th>
+            <th>T.Id</th>                                        
+            <th>Nro. Id</th>
+            <th>Razon Social</th>
+            <th>Representante</th>
+            <th>Correo</th>
+            <th>Telefóno</th>
+            <th>Celular</th>
+            <th>Ciudad</th>
+            <th>Dirección</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+          </thead>
+          <tbody>
+              {%for proveedor in proveedor %}
+              <tr>
+                  <td scope="row"></td>
+                  <td>{{proveedor[0]}} </td>
+                  <td>{{proveedor[2]}} </td>                                    
+                  <td>{{proveedor[3]}} </td>                  
+                  <td>{{proveedor[5]}} </td>                                    
+                  <td>{{proveedor[6]}} </td>
+                  <td>{{proveedor[8]}} </td>                                    
+                  <td>{{proveedor[12]}} </td>                  
+                  <td>{{proveedor[13]}} </td>
+                  <td>{{proveedor[10]}} </td>                                    
+                  <td>{{proveedor[11]}} </td>
+                  <td>{{proveedor[14]}} </td> 
+                  <td> <a href="/edit_prod/{{proveedor[0]}}">Editar</a> | <a href="/del_prod/{{proveedor[0]}}">Borrar</a></td>
+              </tr>
+              {%endfor %}
+          </tbody>
+  </table>  
+</div>
+{% endblock %}

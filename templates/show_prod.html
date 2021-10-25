@@ -11,6 +11,7 @@
               <th>Descripcion</th>
               <th>Cant. Min.</th>
               <th>Cant. Disp.</th>                            
+              <th>Acciones</th>
           </tr>
           </thead>
           <tbody>
@@ -22,6 +23,7 @@
                   <td>{{productos[3]}} </td>                  
                   <td>{{productos[4]}} </td>
                   <td>{{productos[5]}} </td>
+                  <td> <a href="/edit_prod/{{productos[0]}}">Editar</a> | <a href="/del_prod/{{productos[0]}}">Borrar</a></td>
               </tr>
               {%endfor %}
           </tbody>

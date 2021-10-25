@@ -240,7 +240,7 @@ def reg_fabricante():
             close_db()
 
             print('Fabricante Registrado correctamente')
-            return redirect('inicio')
+            return redirect(url_for('crud_fabricante'))
 
         return render_template('reg_fab.html', form=reg_fab_form)
     except:
@@ -287,7 +287,8 @@ def edit_fab(id):
             cursor.execute(sql, datos)
             db.commit()
             close_db()
-            return redirect("/")
+            return redirect(url_for('crud_fabricante'))
+            return render_template("show_fab.html", sesion_iniciada=sesion_iniciada, usuario=g.user)
     else:
         return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
@@ -298,25 +299,107 @@ def del_fab(id):
         # chequear el perfil
         # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
         db = get_db()
-        db.execute("delete from fabricantes where id_fabricante=?", (id))
+        db.execute("delete from fabricante where id_fabricante=?", (id,))
         db.commit()
         close_db()
-        return redirect("/")
+        return redirect(url_for('crud_fabricante'))
     else:
         return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
-@app.route('/articulos')
-def articulos():
-    if g.user:
-        sql = "Select * fom productos"
+@app.route("/crud_productos", methods=["GET", "POST"])
+def crud_productos():
+    if g.user:  
+        # si ya inicio sesion
+        # chequear el perfil
+        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
+        sql = "Select * from productos"
         db = get_db()
         cursor = db.cursor()
         cursor.execute(sql)
-        articulos = cursor.fetchall()
+        productos = cursor.fetchall()
         close_db()
-        return render_template_string("articulos.html", articulos=articulos)
+        return render_template("show_prod.html", sesion_iniciada=sesion_iniciada, productos=productos, usuario=g.user)
     else:
-        return redirect('login')
+        return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
+
+@app.route('/reg_producto', methods=('GET', 'POST'))
+def reg_producto():
+    if g.user == None:
+        return redirect(url_for('/login'))
+
+    prod_fab_form = forms.ProductosForm(request.form)
+    try:
+        if request.method == 'POST':
+            cod_prod = request.form['cod_prod']
+            name_prod = request.form['name_prod']
+            desc_prod = request.form['desc_prod']
+            cant_min_req = request.form['cant_min_req']
+            cant_disp = request.form['cant_disp']
+            cusuario = usuario
+            error = None
+            db = get_db()
+
+            if not utils.isNroidValid(cod_prod):
+                error = "El Nro. de ID del Producto debe ser numerico."
+                print(error)
+                return render_template('reg_prod.html', form=prod_fab_form)
+
+            if db.execute('SELECT id_producto FROM productos WHERE codigo_producto = ?', (cod_prod,)).fetchone() is not None:
+                error = 'Existe un Producto con ese Codigo'.format(cod_prod)
+                print(error)
+                return render_template('reg_prod.html', form=prod_fab_form)
+
+            db.execute(
+                '''INSERT INTO Productos (codigo_producto, nombre_producto, descripcion, cminima_rq_bodega, cdisponible_bodega, codigo_usuario)
+                VALUES (?,?,?,?,?,?)''',
+                (cod_prod, name_prod, desc_prod, cant_min_req, cant_disp, cusuario)
+            )
+            db.commit()
+            close_db()
+
+            print('Producto Registrado correctamente')
+            return redirect(url_for('crud_productos'))
+
+        return render_template('reg_prod.html', form=prod_fab_form)
+    except:
+        print('ERROR- REG PRODUCTO')
+        return render_template('reg_prod.html', form=prod_fab_form)
+
+@app.route("/edit_prod/<int:id>", methods=["GET", "POST"])
+def edit_prod(id):
+    if g.user:  
+        # si ya inicio sesion
+        # chequear el perfil
+        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
+        edit_prod_form = forms.ProductosForm(request.form)        
+        if request.method == 'GET':
+   
+            db = get_db()
+            cursor = db.cursor()
+            cursor.execute("select * from productos where id_producto=?", (id,))
+            productos = cursor.fetchall()
+            close_db()
+            return render_template("edit_prod.html", form=edit_prod_form, sesion_iniciada=sesion_iniciada, productos=productos, usuario=g.user)
+        else:
+            cod_prod = request.form['cod_prod']
+            name_prod = request.form['name_prod']
+            desc_prod = request.form['desc_prod']
+            cant_min_req = request.form['cant_min_req']
+            cant_disp = request.form['cant_disp']
+            cusuario = usuario
+
+            sql = '''Update producto set codigo_producto=?, nombre_producto=?, descripcion=?, 
+                cminima_rq_bodega=?, cdisponible_bodega=?)
+                Where id_producto =?;'''
+            datos =(cod_prod, name_prod, desc_prod, cant_min_req, cant_disp, id) 
+            db = get_db()
+            cursor = db.cursor()
+            cursor.execute(sql, datos)
+            db.commit()
+            close_db()
+            return redirect(url_for('crud_productos'))
+    else:
+        return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
 @app.route("/del_prod/<int:id>")
 def del_prod(id):
@@ -328,23 +411,9 @@ def del_prod(id):
         db.execute("delete from productos where id_producto=?", (id,))
         db.commit()
         close_db()
-        return redirect("/")
+        return render_template("show_prod.html", sesion_iniciada=sesion_iniciada, usuario=g.user)
     else:
         return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
-
-@app.route("/productos/<id_productos>", methods=["GET", "POST"])
-def productos(id_productos):
-    # LogicaAlgoritm Sprint 3
-
-    try:
-        id_productos = int(id_productos)
-    except Exception as e:
-        opcion = 0
-
-    if id_productos in Lista_productos:
-        return Lista_productos[id_productos]
-    else:
-        return f"Error producto :{id_productos} no existe"
 
 
 @app.route("/proveedores/<id_proveedor>", methods=["GET", "POST"])
@@ -359,25 +428,21 @@ def proveedores(id_proveedor):
     # Editar / Crear Proveedores
     # render_template('proveedor.html')
 
-
-@app.route("/proveedor/<opcion>", methods=["GET", "POST"])
-def gestion_proveedores(opcion):
-    # return  "Opcion 1 Editar/Crear Proveedor"
-    # si ya inicio sesion
-    # chequear el perfil
-
-    # LogicaAlgoritm Sprint3
-    try:
-        opcion = int(opcion)
-    except Exception as e:
-        opcion = 0
-
-    if opcion in opciones:
-        return opciones[opcion]
+@app.route("/crud_proveedor", methods=["GET", "POST"])
+def crud_proveedor():
+    if g.user:  
+        # si ya inicio sesion
+        # chequear el perfil
+        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
+        sql = "Select * from proveedor"
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute(sql)
+        proveedor = cursor.fetchall()
+        close_db()
+        return render_template("show_provee.html", sesion_iniciada=sesion_iniciada, proveedor=proveedor, usuario=g.user)
     else:
-        return "Opcion Invalida"
-    # Editar / Crear Proveedores
-    # render_template('gproveedor.html')"""
+        return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
 @app.route( '/reg_proveedor', methods=('GET', 'POST') )
 def reg_proveedor():
@@ -429,13 +494,26 @@ def reg_proveedor():
             close_db()
 
             print( 'Proveedor Registrado correctamente' )
-            return redirect( 'inicio' )
+            return redirect(url_for('crud_proveedor'))
         
         return render_template( 'reg_proveed.html', form = reg_prov_form )
     except:
         print('ERROR - REGISTRO DE PROVEEDORES')
         return render_template( 'reg_proveed.html', form = reg_prov_form )
 
+@app.route("/del_prov/<int:id>")
+def del_prov(id):
+    if g.user:  
+        # si ya inicio sesion
+        # chequear el perfil
+        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
+        db = get_db()
+        db.execute("delete from proveedor where id_proveedor=?", (id,))
+        db.commit()
+        close_db()
+        return render_template("show_provee.html", sesion_iniciada=sesion_iniciada, usuario=g.user)
+    else:
+        return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
 @app.route("/ayuda", methods=["GET"])
 def ayuda():

@@ -71,9 +71,6 @@ class AutosForm(FlaskForm):
     mod_aut = StringField('Modelo', validators=[DataRequired(message='')])
     id_fab = StringField('ID Fabrica', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
     lin_aut = StringField('Linea', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
-    est_aut = StringField('Estado', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
-    fec_sist = StringField('Fecha Sistema', validators=[DataRequired(message='No dejar vacío, completar')])
-    cod_user = StringField('Codigo Usuario', validators=[DataRequired(message='No dejar vacío, completar')])
     submit = SubmitField('Registrar Usuario')
 
 class ProveedoresForm(FlaskForm):
@@ -95,11 +92,8 @@ class ProveedoresForm(FlaskForm):
 
 class ProductosForm(FlaskForm):
     cod_prod = StringField('Codigo Producto', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=15)])
-    name_prod = SelectField('Nombre Producto', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
-    Desc_prod = StringField('Descripcion', validators=[DataRequired(message='')])    
-    cant_min_req = StringField('Cantidad Minima Requerida ', validators=[DataRequired(message='')])
-    cant_disp = StringField('Cantidad Disponible', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
-    est_aut = StringField('Estado', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
-    fec_sist = StringField('Fecha Sistema', validators=[DataRequired(message='No dejar vacío, completar')])
-    cod_user = StringField('Codigo Usuario', validators=[DataRequired(message='No dejar vacío, completar')])
+    name_prod = StringField('Nombre Producto', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])
+    desc_prod = StringField('Descripcion', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])    
+    cant_min_req = IntegerField('Cantidad Minima Requerida', validators=[DataRequired(message='Valor mayor a 0'), Length(min=10, max=10, message="")])
+    cant_disp = IntegerField('Cantidad Disponible', validators=[DataRequired(message='Valor mayor a 0'), Length(min=10, max=10, message="")])
     submit = SubmitField('Registrar Usuario')
