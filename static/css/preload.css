@@ -108,8 +108,7 @@
     height: 132px;
     opacity: 1;
     position: absolute;
-    top: 34px;
-    left: 86px;
+    margin: 0 auto;
     overflow: hidden;
   }
 

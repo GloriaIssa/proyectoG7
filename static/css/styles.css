@@ -10,7 +10,7 @@
     --gris: #757575;
 }
 html{
-    font-size: 62.5%;
+    font-size: 80%;
     box-sizing: border-box;
     scroll-snap-type: y mandatory;
 }
@@ -196,8 +196,9 @@ h3 {
 }
 
 .form_menu {
-  padding-top: 100px;
+  padding-top: 20px;
   align-items: flex;
+  margin: 0 auto;
 }
 
 .daimler {
