@@ -4,8 +4,9 @@
     <div class="bg_app servicios">
         <div class="logo_intro">
             <div class="content-daimler">
-                {% if sesion_iniciada %}
-                    <h2 class="titulo">BIENVENIDO AL SISTEMA DE INVENTARIO</h2>            
+                {% if sesion_iniciada[0] %}
+                    <h2 class="titulo">BIENVENIDO AL SISTEMA DE INVENTARIO</h2>
+                    <h3> Bienvenido </h3>            
                 {%else%}
                     <h2 class="titulo">PAGINA INICIAL</h2>
                 {%endif%}
@@ -16,8 +17,8 @@
         <div class="logo_inicio"></div>
         <div class="formulario">
             <span>Inicio de sesión</span>
-            {% if sesion_iniciada %}
-                <h2> Bienvenido </h2>
+            {% if sesion_iniciada[0] %}
+                <h3> Bienvenido </h3>
                 <form action="\salir" method="POST">
                     <input type="submit" value="SALIR" class="boton">
                 </form>

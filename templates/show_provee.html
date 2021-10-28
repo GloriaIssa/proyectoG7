@@ -32,8 +32,12 @@
                     <td>{{proveedor[13]}} </td>
                     <td>{{proveedor[10]}} </td>                                    
                     <td>{{proveedor[11]}} </td>
-                    <td>{{proveedor[14]}} </td> 
-                    <td> <a href="/edit_prod/{{proveedor[0]}}">Editar</a> | <a href="/del_prod/{{proveedor[0]}}">Borrar</a></td>
+                    <td>{{proveedor[14]}} </td>
+                    {% if sesion_iniciada[2] != "USUARIO" %}
+                      <td> <a href="/edit_prod/{{proveedor[0]}}">Editar</a> | <a href="/del_prod/{{proveedor[0]}}">Borrar</a></td>
+                    {% else %}
+                      <td>Solo Mostrar</td>
+                    {% endif %}
                 </tr>
                 {%endfor %}
             </tbody>
@@ -45,6 +49,13 @@
     <!-- DataTables -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <!-- Botones Datatable -->
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>       
 </body>    
 
 <script>
@@ -66,32 +77,13 @@ $(document).ready(function() {
           "infoEmpty": "Sin registros disponibles",
           "infoFiltered": "(filtrado de _MAX_ registros total)"
       },
-    dom: 'Bfrtip',
-    buttons: [
-      {
-          extend:    'copyHtml5',
-          text:      '<i class="fa fa-files-o"></i>',
-          titleAttr: 'Copiar'
-      },
-      {
-          extend:    'excelHtml5',
-          text:      '<i class="fa fa-file-excel-o"></i>',
-          titleAttr: 'Excel'
-      },
-      {
-          extend:    'pdfHtml5',
-          text:      '<i class="fa fa-file-pdf-o"></i>',
-          titleAttr: 'PDF',
-          orientation: 'landscape',
-          pageSize: 'LEGAL',
-          customize: function(doc) {
-              doc.styles.tableHeader.fontSize = 8;
-              doc.styles.tableBodyOdd.fontSize = 8;
-              doc.styles.tableBodyEven.fontSize = 8;
-          }
-      }
-    ],
-  });
+
+      dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
 } );
+
 </script>
 {% endblock %}

@@ -25,24 +25,11 @@ app = Flask(__name__)
 app.config.from_object(dev)
 app.secret_key = os.urandom(24)
 
-opciones = {
-    1: "Editar/Crear proveedores",
-    2: "Consultar Proveedores",
-    3: "Eliminar Proveedores"}
-
 usuarios = ("SUPERADMIN", "ADMIN", "USER")
 
-Lista_productos = {
-    1001: "BMWi3",
-    2001: "KIA NEW SPORTAGE 2.0",
-    3001: "FORD EXPLORER LIMITED 3.5",
-    4001: "Audi A5 Sportbag",
-    5001: "Mercedes Benz E200"}
-
-Lista_proveedor = ["BMW", "Audi", "Subaru", "Kia", "FORD", "Mercedes Benz"]
-
-sesion_iniciada = False
+sesion_iniciada = (False, None, None)     #sesion_iniciada = False
 usuario = None
+rol_uact = None
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -66,7 +53,7 @@ def inicio():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    global sesion_iniciada, usuario
+    global sesion_iniciada, usuario, rol_uact
     login_form = forms.LoginForm(request.form)
 
     try:
@@ -110,8 +97,9 @@ def login():
                         session.clear()
                         # campo codigo_usuario de la tabla usuarios
                         session['user_id'] = user[1]
-                        sesion_iniciada = True
+                        sesion_iniciada = (True, session['user_id'], user[6])    #sesion_iniciada = True
                         usuario = session['user_id']
+                        rol_uact = user[6]
                         return redirect(url_for('inicio'))
                 flash(error)
             else:
@@ -126,16 +114,16 @@ def login():
                     return redirect(url_for('inicio'))
             flash(error)
             close_db()
-        return render_template("login.html", form=login_form)
+        return render_template("login.html", form=login_form, sesion_iniciada=sesion_iniciada)
     except Exception as e:
         print(e)
-        return render_template("login.html", form=login_form)
+        return render_template("login.html", form=login_form, sesion_iniciada=sesion_iniciada)
 
 
 @app.route("/salir", methods=["POST"])
 def salir():
     global sesion_iniciada
-    sesion_iniciada = False
+    sesion_iniciada = (False, None, None)     #sesion_iniciada = False
     g.user = None
     session.clear()
     return redirect(url_for('inicio'))
@@ -144,7 +132,7 @@ def salir():
 @app.route("/cancelar", methods=["POST"])
 def cancelar():
     global sesion_iniciada
-    sesion_iniciada = False
+    # sesion_iniciada = False
     return redirect(url_for('inicio'))
 
 
@@ -511,6 +499,85 @@ def del_prov(id):
         return redirect(url_for('crud_proveedor'))
     else:
         return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
+
+@app.route("/crud_usuario", methods=["GET", "POST"])
+def crud_usuario():
+    if g.user:  
+        # si ya inicio sesion
+        # chequear el perfil
+        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
+        sql = "Select * from usuarios"
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute(sql)
+        cusers = cursor.fetchall()
+        close_db()
+        return render_template("show_users.html", sesion_iniciada=sesion_iniciada, cusers=cusers, usuario=g.user)
+    else:
+        return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
+
+@app.route('/reg_users', methods=('GET', 'POST'))
+def reg_users():
+    if g.user == None:
+        return redirect(url_for('/login'))
+
+    users_form = forms.RegistroUsuario(request.form)
+    print(request.form)
+    # try:
+    if request.method == 'POST':
+        cod_usuario = request.form['cod_usuario']
+        print(cod_usuario)
+        nombre_usuario = request.form['nombre_usuario']
+        email_usuario = request.form['email_usuario']
+        cargo = request.form['cargo']
+        foto = request.form['foto']
+        codigo_rol = request.form['codigo_rol']
+        password = request.form['password']
+        codigo_pais = request.form['codigo_pais']
+        direccion = request.form['direccion']
+        telefono = request.form['telefono']
+        celular = request.form['celular']
+        ciudad = request.form['ciudad']
+        error = None
+        db = get_db()
+
+        print(foto)
+
+        if not utils.isNroidValid(cod_usuario):
+            error = "El Nro. de ID del Usuario debe ser numerico."
+            print(error)
+            return render_template('reg_user.html', form=users_form)
+
+        if not utils.isEmailValid(email_usuario):
+            error = 'Correo invalido'
+            print(error)
+            return render_template('reg_user.html', form=users_form)
+
+        if db.execute('SELECT codigo_usuario FROM usuarios WHERE codigo_usuario = ?', (cod_usuario,)).fetchone() is not None:
+            error = 'Ya existe el Usuario: '.format( cod_usuario )
+            print(error)
+            return render_template('reg_user.html', form=users_form)
+        
+        passhasheado = generate_password_hash(password)
+
+        db.execute(
+            '''INSERT INTO usuarios (codigo_usuario, nombre_usuario, email_usuario, cargo, foto, codigo_rol, 
+            password, codigo_pais, direccion, telefono, celular, ciudad) VALUES 
+            (?,?,?,?,?,?,?,?,?,?,?,?)''',
+            (cod_usuario, nombre_usuario, email_usuario, cargo, foto, codigo_rol, passhasheado, codigo_pais,
+                direccion, telefono, celular, ciudad)
+        )
+        db.commit()
+        close_db()
+
+        print('Usuario Registrado correctamente')
+        return redirect(url_for('crud_usuario'))
+
+    return render_template('reg_user.html', form=users_form)
+    # except:
+    #     print('ERROR- REG USUARIO')
+    #     return render_template('reg_user.html', form=users_form)
+
 
 @app.route("/ayuda", methods=["GET"])
 def ayuda():

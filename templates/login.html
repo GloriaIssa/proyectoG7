@@ -4,8 +4,9 @@
     <div class="bg_app servicios">
         <div class="logo_intro">
             <div class="content-daimler">
-                {% if sesion_iniciada %}
-                    <h2 class="titulo">SISTEMA DE INVENTARIO</h2>            
+                {% if sesion_iniciada[0] %}
+                    <h2 class="titulo">SISTEMA DE INVENTARIO</h2>
+                    <h3> Bienvenido </h3>            
                 {%else%}
                     <h2 class="titulo">ENTRADA AL SISTEMA</h2>
                 {%endif%}
