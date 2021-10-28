@@ -22,7 +22,7 @@ class RegistroUsuario(FlaskForm):
     email_usuario = EmailField('Email Usuario', validators=[DataRequired(message='No dejar vacío, completar'), Email()])
     cargo = StringField('Cargo Usuario', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=15)])
     foto = FileField('Selecciona imagen:')
-    codigo_rol = SelectField('Rol de Usuario', choices=[("SUPERADMIN"), ("ADMIN"), ("USUARIO")])
+    codigo_rol = SelectField('Rol de Usuario', choices=[("USER"), ("SADMIN"), ("ADMIN")])
     password = PasswordField('Contraseña', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=50)])
     codigo_pais = StringField('Pais', validators=[DataRequired(message='No dejar vacío, completar')])
     direccion = TextField('Direccion', validators=[DataRequired(message='No dejar vacío, completar'), Length(max=255)])    

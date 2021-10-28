@@ -33,7 +33,7 @@
                     <td>{{proveedor[10]}} </td>                                    
                     <td>{{proveedor[11]}} </td>
                     <td>{{proveedor[14]}} </td>
-                    {% if sesion_iniciada[2] != "USUARIO" %}
+                    {% if sesion_iniciada[2] != "USER" %}
                       <td> <a href="/edit_prod/{{proveedor[0]}}">Editar</a> | <a href="/del_prod/{{proveedor[0]}}">Borrar</a></td>
                     {% else %}
                       <td>Solo Mostrar</td>

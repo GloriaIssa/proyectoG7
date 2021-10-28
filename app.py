@@ -25,7 +25,7 @@ app = Flask(__name__)
 app.config.from_object(dev)
 app.secret_key = os.urandom(24)
 
-usuarios = ("SUPERADMIN", "ADMIN", "USER")
+usuarios = ("SADMIN", "ADMIN", "USER")
 
 sesion_iniciada = (False, None, None)     #sesion_iniciada = False
 usuario = None
