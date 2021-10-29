@@ -1,12 +1,12 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap'); */
 
 :root {
-    --blanco: #ffffff;
+    --blanco: #000;
     --amarilo: #e6f36f;    
     --oscuro: #212121;
     --rojo: #e70606;
     --primario: #c0e4bb;
-    --secundario: #0097A7;
+    --secundario: #adb5bd;
     --gris: #757575;
 }
 html{
@@ -62,7 +62,7 @@ h3 {
     text-align: center;
     font-size: 3.8rem;
     font-family: 'Acme', sans-serif;
-    color: rgb(159, 159, 224);
+    color: #fafafb;
 }
 
 .titulo span{
@@ -345,6 +345,7 @@ span{
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px; */
   overflow: hidden;
+  margin: 16px;
 }
 .boton:hover{
   cursor: pointer;
