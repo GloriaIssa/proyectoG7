@@ -35,6 +35,14 @@
     }
 }
 
+.coln { 
+    background-color: aqua;
+}
+
+.ccen {
+    text-align: center;
+}
+
 .nav{
     width: 300px;
 }
