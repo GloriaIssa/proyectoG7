@@ -17,7 +17,10 @@
                 <th>Ciudad</th>
                 <th>Dirección</th>
                 <th>Estado</th>
-                <th>Acciones</th>
+                {% if sesion_iniciada[2] != "USER" %}
+                  <th>Acciones</th>
+                {% endif %}
+                
               </tr>
               </thead>
               <tbody>
@@ -35,12 +38,27 @@
                       <td>{{fabricantes[14]}} </td> 
                       {% if sesion_iniciada[2] != "USER" %}
                         <td> <a href="/edit_fab/{{fabricantes[0]}}">Editar</a> | <a href="/del_fab/{{fabricantes[0]}}">Borrar</a></td>
-                      {% else %}  
-                        <td> Solo Mostrar </td> 
                       {% endif %}
                   </tr>
                   {%endfor %}
               </tbody>
+              <tfoot class="thead-inverse">
+                <tr>
+                  <th>#Id</th>
+                  <th>T.Id</th>                                        
+                  <th>Nro. Id</th>
+                  <th>Razon Social</th>
+                  <th>Correo</th>
+                  <th>Telefóno</th>
+                  <th>Celular</th>
+                  <th>Ciudad</th>
+                  <th>Dirección</th>
+                  <th>Estado</th>
+                  {% if sesion_iniciada[2] != "USER" %}
+                    <th>Acciones</th>
+                  {% endif %}
+                </tr>
+              </tfoot>
       </table>  
   </div>
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->

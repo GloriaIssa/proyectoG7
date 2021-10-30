@@ -13,7 +13,9 @@
                 <th>Descripcion</th>
                 <th>Cant. Min.</th>
                 <th>Cant. Disp.</th>                            
-                <th>Acciones</th>
+                {% if sesion_iniciada[2] != "USER" %}
+                  <th>Acciones</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -27,12 +29,23 @@
                     <td>{{productos[5]}} </td>
                     {% if sesion_iniciada[2] != "USER" %}
                         <td> <a href="/edit_prod/{{productos[0]}}">Editar</a> | <a href="/del_prod/{{productos[0]}}">Borrar</a></td>
-                    {% else %}
-                        <td>Solo Mostrar</td>
-                    {% endif %}    
+                   {% endif %}    
                 </tr>
                 {%endfor %}
             </tbody>
+            <tfoot class="thead-inverse">
+                <tr>
+                    <th>#ID</th>
+                    <th>Codigo</th>
+                    <th>Nombre Producto</th>
+                    <th>Descripcion</th>
+                    <th>Cant. Min.</th>
+                    <th>Cant. Disp.</th>                            
+                    {% if sesion_iniciada[2] != "USER" %}
+                      <th>Acciones</th>
+                    {% endif %}
+                </tr>
+            </tfoot>
     </table>  
     </div>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

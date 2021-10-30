@@ -2,13 +2,6 @@ import functools
 import os
 from re import X
 
-import tkinter
-from tkinter import messagebox
-
-# This code is to hide the main tkinter window
-root = tkinter.Tk()
-root.withdraw()
-
 from flask import Flask, render_template, flash, current_app
 from flask import redirect, request, url_for, session, g
 from flask.templating import render_template_string
@@ -204,18 +197,18 @@ def reg_fabricante():
             if not utils.isNroidValid(nid_fab):
                 error = "El Nro. de ID del Fabricante debe ser numerico."
                 print(error)
-                return render_template('reg_fab.html', form=reg_fab_form)
+                return render_template('reg_fab.html', form=reg_fab_form, sesion_iniciada=sesion_iniciada)
 
             if not utils.isEmailValid(email):
                 error = 'Correo invalido'
                 print(error)
-                return render_template('reg_fab.html', form=reg_fab_form)
+                return render_template('reg_fab.html', form=reg_fab_form, sesion_iniciada=sesion_iniciada)
 
             if db.execute('SELECT id_fabricante FROM fabricante WHERE nroid_fabricante = ?', (nid_fab,)).fetchone() is not None:
                 error = 'Existe un Fabricante con ese Nro. de ID'.format(
                     nid_fab)
                 print(error)
-                return render_template('reg_fab.html', form=reg_fab_form)
+                return render_template('reg_fab.html', form=reg_fab_form, sesion_iniciada=sesion_iniciada)
 
             db.execute(
                 '''INSERT INTO fabricante (cod_fabricante, tipoid_fabricante, nroid_fabricante, dv_nroid, razon_social_fabricante, nombre_representante,
@@ -230,10 +223,10 @@ def reg_fabricante():
             print('Fabricante Registrado correctamente')
             return redirect(url_for('crud_fabricante'))
 
-        return render_template('reg_fab.html', form=reg_fab_form)
+        return render_template('reg_fab.html', form=reg_fab_form, sesion_iniciada=sesion_iniciada)
     except:
         print('ERROR- REG FABRICANTE')
-        return render_template('reg_fab.html', form=reg_fab_form)
+        return render_template('reg_fab.html', form=reg_fab_form, sesion_iniciada=sesion_iniciada)
 
 @app.route("/edit_fab/<int:id>", methods=["GET", "POST"])
 def edit_fab(id):
@@ -329,12 +322,12 @@ def reg_producto():
             if not utils.isNroidValid(cod_prod):
                 error = "El Nro. de ID del Producto debe ser numerico."
                 print(error)
-                return render_template('reg_prod.html', form=prod_fab_form)
+                return render_template('reg_prod.html', form=prod_fab_form, sesion_iniciada=sesion_iniciada)
 
             if db.execute('SELECT id_producto FROM productos WHERE codigo_producto = ?', (cod_prod,)).fetchone() is not None:
                 error = 'Existe un Producto con ese Codigo'.format(cod_prod)
                 print(error)
-                return render_template('reg_prod.html', form=prod_fab_form)
+                return render_template('reg_prod.html', form=prod_fab_form, sesion_iniciada=sesion_iniciada)
 
             db.execute(
                 '''INSERT INTO Productos (codigo_producto, nombre_producto, descripcion, cminima_rq_bodega, cdisponible_bodega, codigo_usuario)
@@ -347,10 +340,10 @@ def reg_producto():
             print('Producto Registrado correctamente')
             return redirect(url_for('crud_productos'))
 
-        return render_template('reg_prod.html', form=prod_fab_form)
+        return render_template('reg_prod.html', form=prod_fab_form, sesion_iniciada=sesion_iniciada)
     except:
         print('ERROR- REG PRODUCTO')
-        return render_template('reg_prod.html', form=prod_fab_form)
+        return render_template('reg_prod.html', form=prod_fab_form, sesion_iniciada=sesion_iniciada)
 
 @app.route("/edit_prod/<int:id>", methods=["GET", "POST"])
 def edit_prod(id):
@@ -401,18 +394,6 @@ def del_prod(id):
         return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
 
-@app.route("/proveedores/<id_proveedor>", methods=["GET", "POST"])
-def proveedores(id_proveedor):
-    # LogicaAlgoritm Sprint 3
-    if id_proveedor in Lista_proveedor:
-        # si ya inicio sesion
-        # chequear el perfil
-        return f"Pagina de Gestion de Proveedores : {id_proveedor}"
-    else:
-        return f"Error proveedor :{id_proveedor} no existe"
-    # Editar / Crear Proveedores
-    # render_template('proveedor.html')
-
 @app.route("/crud_proveedor", methods=["GET", "POST"])
 def crud_proveedor():
     if g.user:  
@@ -457,17 +438,17 @@ def reg_proveedor():
             if not utils.isNroidValid( nroid_prov ):
                 error = "El Nro. de ID del Proveedor debe ser numerico."
                 print( error )
-                return render_template( 'reg_proveed.html', form = reg_prov_form )
+                return render_template( 'reg_proveed.html', form = reg_prov_form, sesion_iniciada=sesion_iniciada )
 
             if not utils.isEmailValid( email_prov ):
                 error = 'Correo invalido'
                 print( error )
-                return render_template( 'reg_proveed.html', form = reg_prov_form )
+                return render_template( 'reg_proveed.html', form = reg_prov_form, sesion_iniciada=sesion_iniciada )
 
             if db.execute( 'SELECT nroid_proveedor FROM proveedor WHERE nroid_proveedor = ?', (nroid_prov,) ).fetchone() is not None:
                 error = 'Existe un Fabricante con ese Nro. de ID'.format( nroid_prov )
                 print( error )
-                return render_template( 'reg_proveed.html', form = reg_prov_form )
+                return render_template( 'reg_proveed.html', form = reg_prov_form, sesion_iniciada=sesion_iniciada )
 
             db.execute(
                 '''INSERT INTO proveedor (codigo_proveedor, tipoid_proveedor, nroid_proveedor, dv_nroid, razon_social_proveedor, nombre_representante,
@@ -481,10 +462,10 @@ def reg_proveedor():
             print( 'Proveedor Registrado correctamente' )
             return redirect(url_for('crud_proveedor'))
         
-        return render_template( 'reg_proveed.html', form = reg_prov_form )
+        return render_template( 'reg_proveed.html', form = reg_prov_form, sesion_iniciada=sesion_iniciada )
     except:
         print('ERROR - REGISTRO DE PROVEEDORES')
-        return render_template( 'reg_proveed.html', form = reg_prov_form )
+        return render_template( 'reg_proveed.html', form = reg_prov_form, sesion_iniciada=sesion_iniciada )
 
 @app.route("/del_prov/<int:id>")
 def del_prov(id):
@@ -523,60 +504,60 @@ def reg_users():
 
     users_form = forms.RegistroUsuario(request.form)
     print(request.form)
-    # try:
-    if request.method == 'POST':
-        cod_usuario = request.form['cod_usuario']
-        print(cod_usuario)
-        nombre_usuario = request.form['nombre_usuario']
-        email_usuario = request.form['email_usuario']
-        cargo = request.form['cargo']
-        foto = request.form['foto']
-        codigo_rol = request.form['codigo_rol']
-        password = request.form['password']
-        codigo_pais = request.form['codigo_pais']
-        direccion = request.form['direccion']
-        telefono = request.form['telefono']
-        celular = request.form['celular']
-        ciudad = request.form['ciudad']
-        error = None
-        db = get_db()
+    try:
+        if request.method == 'POST':
+            cod_usuario = request.form['cod_usuario']
+            print(cod_usuario)
+            nombre_usuario = request.form['nombre_usuario']
+            email_usuario = request.form['email_usuario']
+            cargo = request.form['cargo']
+            foto = request.form['foto']
+            codigo_rol = request.form['codigo_rol']
+            password = request.form['password']
+            codigo_pais = request.form['codigo_pais']
+            direccion = request.form['direccion']
+            telefono = request.form['telefono']
+            celular = request.form['celular']
+            ciudad = request.form['ciudad']
+            error = None
+            db = get_db()
 
-        print(foto)
+            print(foto)
 
-        if not utils.isNroidValid(cod_usuario):
-            error = "El Nro. de ID del Usuario debe ser numerico."
-            print(error)
-            return render_template('reg_user.html', form=users_form)
+            if not utils.isNroidValid(cod_usuario):
+                error = "El Nro. de ID del Usuario debe ser numerico."
+                print(error)
+                return render_template('reg_user.html', form=users_form, sesion_iniciada=sesion_iniciada)
 
-        if not utils.isEmailValid(email_usuario):
-            error = 'Correo invalido'
-            print(error)
-            return render_template('reg_user.html', form=users_form)
+            if not utils.isEmailValid(email_usuario):
+                error = 'Correo invalido'
+                print(error)
+                return render_template('reg_user.html', form=users_form, sesion_iniciada=sesion_iniciada)
 
-        if db.execute('SELECT codigo_usuario FROM usuarios WHERE codigo_usuario = ?', (cod_usuario,)).fetchone() is not None:
-            error = 'Ya existe el Usuario: '.format( cod_usuario )
-            print(error)
-            return render_template('reg_user.html', form=users_form)
-        
-        passhasheado = generate_password_hash(password)
+            if db.execute('SELECT codigo_usuario FROM usuarios WHERE codigo_usuario = ?', (cod_usuario,)).fetchone() is not None:
+                error = 'Ya existe el Usuario: '.format( cod_usuario )
+                print(error)
+                return render_template('reg_user.html', form=users_form, sesion_iniciada=sesion_iniciada)
+            
+            passhasheado = generate_password_hash(password)
 
-        db.execute(
-            '''INSERT INTO usuarios (codigo_usuario, nombre_usuario, email_usuario, cargo, foto, codigo_rol, 
-            password, codigo_pais, direccion, telefono, celular, ciudad) VALUES 
-            (?,?,?,?,?,?,?,?,?,?,?,?)''',
-            (cod_usuario, nombre_usuario, email_usuario, cargo, foto, codigo_rol, passhasheado, codigo_pais,
-                direccion, telefono, celular, ciudad)
-        )
-        db.commit()
-        close_db()
+            db.execute(
+                '''INSERT INTO usuarios (codigo_usuario, nombre_usuario, email_usuario, cargo, foto, codigo_rol, 
+                password, codigo_pais, direccion, telefono, celular, ciudad) VALUES 
+                (?,?,?,?,?,?,?,?,?,?,?,?)''',
+                (cod_usuario, nombre_usuario, email_usuario, cargo, foto, codigo_rol, passhasheado, codigo_pais,
+                    direccion, telefono, celular, ciudad)
+            )
+            db.commit()
+            close_db()
 
-        print('Usuario Registrado correctamente')
-        return redirect(url_for('crud_usuario'))
+            print('Usuario Registrado correctamente')
+            return redirect(url_for('crud_usuario'))
 
-    return render_template('reg_user.html', form=users_form)
-    # except:
-    #     print('ERROR- REG USUARIO')
-    #     return render_template('reg_user.html', form=users_form)
+        return render_template('reg_user.html', form=users_form, sesion_iniciada=sesion_iniciada)
+    except:
+        print('ERROR- REG USUARIO')
+        return render_template('reg_user.html', form=users_form, sesion_iniciada=sesion_iniciada)
 
 
 @app.route("/ayuda", methods=["GET"])
@@ -586,6 +567,7 @@ def ayuda():
     return render_template('config.html')
     # Ayuda en General con aceso a Videos.
     # render_template('ayuda.html')
+
 
 @app.before_request  # Decorador
 def load_logged_in_user():

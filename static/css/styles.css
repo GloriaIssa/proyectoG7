@@ -199,6 +199,7 @@ h3 {
   padding-top: 20px;
   align-items: flex;
   margin: 0 auto;
+  position: relative;
 }
 
 .daimler {
@@ -226,6 +227,11 @@ h3 {
     justify-content: center;       
 }
 
+.cont-ppal{
+  align-items: center;
+  justify-content: center;
+}
+
 span{
     font: size 2rem;
 }
@@ -242,7 +248,7 @@ span{
   background-color: var(--secundario);
   padding: 2rem;
   border-radius: 10px;
-  scroll-snap-align: center;
+  scroll-snap-align: center; 
   scroll-snap-stop: always;
 }
 .formulario legend {
@@ -364,7 +370,7 @@ span{
 .logo_inicio {
   width: 331px;
   height: 40px;
-  background: url("../img/logo.png");
+  background: url("../img/logol.svg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
