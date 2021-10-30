@@ -368,7 +368,7 @@ def edit_prod(id):
             cant_disp = float(request.form['cant_disp'])
 
             sql = '''Update productos set codigo_producto=?, nombre_producto=?, descripcion=?,
-                cminima_rq_bodega=?, cdisponible_bodega=?) Where id_producto =?;'''
+                cminima_rq_bodega=?, cdisponible_bodega=? Where id_producto =?;'''
             datos =(cod_prod, name_prod, desc_prod, cant_min_req, cant_disp, id) 
             db = get_db()
             cursor = db.cursor()
@@ -466,6 +466,52 @@ def reg_proveedor():
     except:
         print('ERROR - REGISTRO DE PROVEEDORES')
         return render_template( 'reg_proveed.html', form = reg_prov_form, sesion_iniciada=sesion_iniciada )
+
+
+@app.route("/edit_prov/<int:id>", methods=["GET", "POST"])
+def edit_prov(id):
+    if g.user:  
+        # si ya inicio sesion
+        # chequear el perfil
+        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
+        edit_prov_form = forms.ProveedoresForm(request.form)        
+        if request.method == 'GET':
+   
+            db = get_db()
+            cursor = db.cursor()
+            cursor.execute("select * from proveedor where id_proveedor=?", (id,))
+            proveedor = cursor.fetchall()
+            close_db()
+            return render_template("edit_prov.html", form=edit_prov_form, sesion_iniciada=sesion_iniciada, proveedor=proveedor, usuario=g.user)
+        else:
+            cod_prov = request.form['cod_prov'] 
+            tipoid_prov = request.form['tipoid_prov']
+            nroid_prov  = request.form['nroid_prov']
+            dv_nroid_prov = request.form['dv_nroid_prov'] 
+            rsocial_prov = request.form['rsocial_prov']
+            name_rep_prov = request.form['name_rep_prov']
+            name_con_prov = request.form['name_con_prov']
+            email_prov = request.form['email_prov']
+            codigo_pais = request.form['codigo_pais']
+            ciudad = request.form['ciudad']
+            direccion = request.form['direccion']
+            telefono = request.form['telefono']
+            celular = request.form['celular'] 
+
+            sql ='''Update proveedor set codigo_proveedor = ?, tipoid_proveedor = ?, nroid_proveedor = ?, dv_nroid = ?, 
+                razon_social_proveedor = ?, nombre_representante = ?, nombre_contacto = ?, email_proveedor = ?, codigo_pais = ?, 
+                ciudad = ?, direccion = ?, telefono = ?, celular = ? Where id_proveedor = ?;'''              
+
+            datos=(cod_prov, tipoid_prov, nroid_prov, dv_nroid_prov, rsocial_prov, name_rep_prov, name_con_prov, email_prov, codigo_pais, ciudad, direccion, telefono, celular, id) 
+            db = get_db()
+            cursor = db.cursor()
+            cursor.execute(sql, datos)
+            db.commit()
+            close_db()
+            return redirect(url_for('crud_proveedor'))
+    else:
+        return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
+
 
 @app.route("/del_prov/<int:id>")
 def del_prov(id):
