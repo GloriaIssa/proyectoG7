@@ -2,44 +2,108 @@
 
 {% block cont_menu %}
 <body>
-    <div class="form_menu">     
+    <div>
         <h2>INFORMACION PRODUCTOS</h2>   
-    <table id="producto" class="table table-striped table-inverse table-responsive display compact" style="width:100%">
-            <thead class="thead-inverse">
-            <tr>
-                <th>#ID</th>
-                <th>Codigo</th>
-                <th>Nombre Producto</th>
-                <th>Descripcion</th>
-                <th>Cant. Min.</th>
-                <th>Cant. Disp.</th>                            
-            </tr>
-            </thead>
-            <tbody>
-                {%for productos in productos %}
+        <div class="form_menu cont-block">     
+        <table id="producto" class="table table-striped table-inverse table-responsive display compact" style="width:100%;zoom:85%">
+                <thead class="thead-inverse">
                 <tr>
-                    <td>{{productos[0]}} </td>                  
-                    <td>{{productos[1]}} </td>
-                    <td>{{productos[2]}} </td>
-                    <td>{{productos[3]}} </td>
-                    <td id="cminima" class="coln ccen">{{productos[4]}}</td>
-                    <td>{{productos[5]}} </td>
+                    <th>#ID</th>
+                    <th>Codigo</th>
+                    <th>Nombre Producto</th>
+                    <th>Descripcion</th>
+                    <th>Cant. Min.</th>
+                    <th>Cant. Disp.</th>                            
                 </tr>
-                {%endfor%}
-            </tbody>
-    </table>  
-    </div>
+                </thead>
+                <tbody>
+                    {%for productos in productos %}
+                    <tr>
+                        <td>{{productos[0]}} </td>                  
+                        <td>{{productos[1]}} </td>
+                        <td>{{productos[2]}} </td>
+                        <td>{{productos[3]}} </td>
+                        <td id="cminima" class="coln ccen">{{productos[4]}}</td>
+                        <td class="ccen">{{productos[5]}} </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+        </table>  
+        </div>
+    </div>       
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://getbootstrap.com/docs/4.1/assets/js/vendor/popper.min.js"></script>
     <script src="https://getbootstrap.com/docs/4.1/dist/js/bootstrap.min.js"></script>
     <!-- DataTables -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
+
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    
     <!-- Funciones Propias 
     <script src="{{ url_for('static', filename= 'js/main.js') }}"></script> -->
 </body>    
 
 <script>
+$(document).ready(function () {
+    // Create DataTable
+    var table = $('#producto').DataTable({
+        dom: 'Pfrtip',
+    });
+ 
+    // Create the chart with initial data
+    var container = $('<div/>').insertBefore(table.table().container());
+ 
+    var chart = Highcharts.chart(container[0], {
+        chart: {
+            type: 'pie',
+        },
+        title: {
+            text: 'Inventario por Producto',
+        },
+        series: [
+            {
+                data: chartData(table),
+            },
+        ],
+    });
+ 
+    // On each draw, update the data in the chart
+    table.on('draw', function () {
+        chart.series[0].setData(chartData(table));
+    });
+});
+ 
+function chartData(table) {
+    var counts = {};
+ 
+    // Count the number of entries for each position
+    table
+        .column(2, { search: 'applied' })
+        .data()
+        .each(function (val) {
+            if (counts[val]) {
+                counts[val] += 1;
+            } else {
+                counts[val] = 1;
+            }
+        });
+ 
+    // And map it to the format highcharts uses
+    return $.map(counts, function (val, key) {
+        return {
+            name: key,
+            y: val,
+        };
+    });
+}
+</script>
+
+<!-- <script>
 $(document).ready(function() {
     $('#producto').DataTable({
       "paging": true,
@@ -88,5 +152,5 @@ $(document).ready(function() {
             document.getElementById("cminima").classList.add("ccen");
      } );
 } );
-</script>
+</script> -->
 {% endblock %}
