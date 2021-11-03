@@ -308,6 +308,33 @@ except Exception as e:
 
 try: 
     pibote.execute("""
+    Insert into proveedor (codigo_proveedor, tipoid_proveedor, nroid_proveedor, dv_nroid, razon_social_proveedor,
+            nombre_representante, nombre_contacto, email_proveedor, codigo_pais, ciudad, direccion,
+            telefono, celular, codigo_usuario)
+    Values ('111001', 'NIT', '910000100', '1', 'Alfa Romeo', 'Romeo Santos', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('211001', 'NIT', '902100100', '1', 'Aston Martin', 'Martin de los Santos', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('311001', 'NIT', '901010101', '1', 'Cadillac', 'Alicia Cadisus', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('411001', 'NIT', '890023102', '1', 'Ferrari', 'Romeo Santos', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('511001', 'NIT', '8202000103', '1', 'Lamborghini', 'Romeo Santos', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('611001', 'NIT', '7800020104', '1', 'Jeep', 'Ksius Clay', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('711001', 'NIT', '190040105', '1', 'Chevrolet', 'Let Chevro', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('811001', 'NIT', '590002006', '1', 'Honda', 'Bruce Honda', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador'),
+    ('911001', 'NIT', '490020407', '1', 'Volskswagen', 'Haggen Klutz', 'Secretaria', 'aromeo@alfaromeo.com', 'IT',
+    'GENOVA','Avda. Los Balcarces 35- 89', '34 8902993', '200987654', 'Administrador');
+    """)
+except Exception as e:
+    print(e)
+
+try: 
+    pibote.execute("""
     INSERT INTO roles (codigo_rol, nombre_rol, prioridad) 
     VALUES ('ADMIN', 'Administrador', 100),
            ('SADMIN', 'Super Administrador', 200),

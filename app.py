@@ -348,9 +348,6 @@ def reg_producto():
 @app.route("/edit_prod/<int:id>", methods=["GET", "POST"])
 def edit_prod(id):
     if g.user:  
-        # si ya inicio sesion
-        # chequear el perfil
-        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
         edit_prod_form = forms.ProductosForm(request.form)        
         if request.method == 'GET':
    
@@ -394,12 +391,27 @@ def del_prod(id):
         return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
 
 
+@app.route("/info_prod/<int:id>")
+def info_prod(id):
+    if g.user:  
+        if request.method == 'GET':
+
+            db = get_db()
+            cursor = db.cursor()
+            cursor.execute( '''select pr.codigo_producto, pr.nombre_producto, pr.descripcion, pro.codigo_proveedor, pro.razon_social_proveedor, pro.celular,
+                    pro.email_proveedor, pro.direccion from productos as pr 
+                    inner join produ_prov as pp on pr.id_producto= pp.id_producto
+                    inner join proveedor as pro on pro.id_proveedor= pp.id_proveedor  
+                    where pr.id_producto= ?; ''', (id,))
+            productos = cursor.fetchall()
+            close_db()
+            return render_template("info_prod.html", sesion_iniciada=sesion_iniciada, productos=productos, usuario=g.user)
+    else:
+        return render_template('index.html', sesion_iniciada=sesion_iniciada, usuario=g.user)
+
 @app.route("/crud_proveedor", methods=["GET", "POST"])
 def crud_proveedor():
     if g.user:  
-        # si ya inicio sesion
-        # chequear el perfil
-        # segun el perfil lo envia a la pagina segun Mapa de Navegabilidad
         sql = "Select * from proveedor"
         db = get_db()
         cursor = db.cursor()
